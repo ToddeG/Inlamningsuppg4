@@ -1,8 +1,5 @@
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 
@@ -20,13 +17,16 @@ class ServerSidePlayer extends Thread {
     Socket socket;
     BufferedReader input;
     PrintWriter output;
+    ObjectOutputStream outputOject;
+    ObjectInputStream inputObject;
     public ServerSidePlayer(Socket socket, String player) {
         this.socket = socket;
         this.player = player;
 
         try {
-            input = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
+            inputObject = new ObjectInputStream(socket.getInputStream());
+            input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            outputOject = new ObjectOutputStream(socket.getOutputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
 
         } catch (IOException e) {

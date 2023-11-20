@@ -1,7 +1,5 @@
 package DatabaseQuestion;
 
-import DatabaseQuestion.QuestionObject;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,22 +7,31 @@ import java.util.ArrayList;
 
 public class ReadFromFile {
 
-    private ArrayList<QuestionObject> questionObjectArrayList = new ArrayList<>();
+    private ArrayList<QuestionObject> musicArrayList = new ArrayList<>();
+    private ArrayList<QuestionObject> historyArrayList = new ArrayList<>();
 
-    ReadFromFile(String path){
+    public ReadFromFile(String path){
         try (BufferedReader reader = new BufferedReader(new FileReader(path))){
             String fileInput;
             while((fileInput = reader.readLine()) != null){
                 String[] question = fileInput.split("\\|");
                 QuestionObject temp = new QuestionObject(question);
-                questionObjectArrayList.add(temp);
+                if (temp.getCategory().equals("Musik")){
+                    musicArrayList.add(temp);
+                }
+                else if (temp.getCategory().equals("Historierns vingslag")){
+                    historyArrayList.add(temp);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public ArrayList<QuestionObject> getQuestionObjectArrayList() {
-        return questionObjectArrayList;
+    public ArrayList<QuestionObject> getMusicArrayList() {
+        return musicArrayList;
+    }
+    public ArrayList<QuestionObject> getHistoryArrayList() {
+        return historyArrayList;
     }
 }

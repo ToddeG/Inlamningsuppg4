@@ -65,11 +65,7 @@ public class TestInterface extends JFrame {
             while (answerTemp[0] == null) {
 
             }
-            if (answerTemp[0].equals(questionRound.get(i).getRightOption())) {
-                results[i] = true;
-            } else {
-                results[i] = false;
-            }
+            results[i] = answerTemp[0].equals(questionRound.get(i).getRightOption());
         }
         return results;
     }

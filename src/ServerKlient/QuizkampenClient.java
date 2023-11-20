@@ -1,3 +1,5 @@
+package ServerKlient;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -19,8 +21,5 @@ public class QuizkampenClient {
         }
     }
 
-    public static void main(String[] args) {
-        QuizkampenClient qkc = new QuizkampenClient();
-    }
 
 }

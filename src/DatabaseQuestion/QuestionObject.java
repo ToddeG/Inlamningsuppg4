@@ -1,3 +1,5 @@
+package DatabaseQuestion;
+
 public class QuestionObject {
 
     String question;

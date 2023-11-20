@@ -1,3 +1,5 @@
+package ServerKlient;
+
 import java.net.ServerSocket;
 public class QuizkampenServer {
         public static void main(String[] args) throws Exception {

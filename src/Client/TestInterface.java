@@ -63,7 +63,6 @@ public class TestInterface extends JFrame {
             }
             revalidate();
             repaint();
-            Scanner scan = new Scanner(System.in);
             while (answerTemp[0] == null) {
 
             }

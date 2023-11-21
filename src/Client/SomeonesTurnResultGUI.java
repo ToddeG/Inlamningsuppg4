@@ -3,7 +3,7 @@ package Client;
 import javax.swing.*;
 import java.awt.*;
 
-public class SomeonesTurnResult extends JFrame {
+public class SomeonesTurnResultGUI extends JFrame {
     JPanel jp = new JPanel(new BorderLayout());
     JPanel northPanel = new JPanel(new GridLayout());
     JPanel centerPanel = new JPanel(new GridLayout(1,3));
@@ -22,7 +22,7 @@ public class SomeonesTurnResult extends JFrame {
     JButton x3 = new JButton("");
     JButton menu = new JButton("Huvudmeny");
 
-    public SomeonesTurnResult() {
+    public SomeonesTurnResultGUI() {
         this.add(jp);
         jp.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         jp.add(northPanel, BorderLayout.NORTH);
@@ -42,6 +42,6 @@ public class SomeonesTurnResult extends JFrame {
     }
 
     public static void main(String[] args) {
-        SomeonesTurnResult str = new SomeonesTurnResult();
+        SomeonesTurnResultGUI str = new SomeonesTurnResultGUI();
     }
 }

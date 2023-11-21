@@ -1,4 +1,4 @@
-package Interface;
+package Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,5 +39,4 @@ public class TestInterface extends JFrame {
 
 
     }
-
 }

@@ -1,17 +1,17 @@
-package DatabaseQuestion;
-
-import ServerCategory.QuestionObject;
+package ServerCategory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReadFromFile {
+public class Database {
 
-    private ArrayList<QuestionObject> questionObjectArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> questionObjectArrayList = new ArrayList<>();
 
-    ReadFromFile(String path){
+    public Database(){}
+
+    public ArrayList<QuestionObject> Category(String path){
         try (BufferedReader reader = new BufferedReader(new FileReader(path))){
             String fileInput;
             while((fileInput = reader.readLine()) != null){
@@ -22,9 +22,7 @@ public class ReadFromFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public ArrayList<QuestionObject> getQuestionObjectArrayList() {
         return questionObjectArrayList;
     }
+
 }

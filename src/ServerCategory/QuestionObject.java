@@ -1,6 +1,8 @@
-package DatabaseQuestion;
+package ServerCategory;
 
-public class QuestionObject {
+import java.io.Serializable;
+
+public class QuestionObject implements Serializable {
 
     String question;
     String option1;
@@ -9,7 +11,7 @@ public class QuestionObject {
     String option4;
     String rightOption;
 
-    QuestionObject(String[] fileInfo){
+    public QuestionObject(String[] fileInfo){
         question = fileInfo[0];
         option1 = fileInfo[1];
         option2 = fileInfo[2];

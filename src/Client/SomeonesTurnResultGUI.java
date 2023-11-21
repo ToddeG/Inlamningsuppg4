@@ -4,44 +4,83 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SomeonesTurnResultGUI extends JFrame {
-    JPanel jp = new JPanel(new BorderLayout());
-    JPanel northPanel = new JPanel(new GridLayout());
-    JPanel centerPanel = new JPanel(new GridLayout(1,3));
-    JPanel centerPanel2 = new JPanel(new GridLayout(1,3));
-    JPanel southPanel = new JPanel(new GridLayout(2,2));
-    JButton yourTurn = new JButton("Din tur");
-    JButton theirTurn = new JButton("Deras tur");
-    JButton p1 = new JButton("Spelare 1");
-    JButton p2 = new JButton("Spelare 2");
-    JButton points = new JButton("X-Y");
-    JButton points1 = new JButton("X-Y");
-    JButton points2 = new JButton("X-Y");
-    JButton points3 = new JButton("X-Y");
-    JButton x1 = new JButton("");
-    JButton x2 = new JButton("");
-    JButton x3 = new JButton("");
-    JButton menu = new JButton("Huvudmeny");
+
+    JPanel gameGridPanel = new JPanel(new GridLayout(4,1));
+    JLabel whoseTurn = new JLabel();
+    JPanel playerPanel = new JPanel(new FlowLayout());
+    JLabel playerOne = new JLabel("player One");
+    JLabel scoreBoard = new JLabel("SCORE");
+    JLabel playerTwo = new JLabel("player Two");
+    JPanel roundsPanel = new JPanel(new FlowLayout());
+    JPanel playerOneGrid = new JPanel(new GridLayout(2,2));
+    JButton plOneQOne = new JButton();
+    JButton plOneQTwo= new JButton();
+    JButton plOneQThree = new JButton();
+    JButton plOneQFour = new JButton();
+    JPanel scoreboardGrid = new JPanel(new GridLayout(2,1));
+    JLabel genreOne = new JLabel("Genre One");
+    JLabel genreTwo = new JLabel("Genre two");
+    JPanel playerTwoGrid = new JPanel(new GridLayout(2,2));
+    JButton plTwoQOne = new JButton();
+    JButton plTwoQTwo= new JButton();
+    JButton plTwoQThree = new JButton();
+    JButton plTwoQFour = new JButton();
+
+
+
+
+
 
     public SomeonesTurnResultGUI() {
-        this.add(jp);
-        jp.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-        jp.add(northPanel, BorderLayout.NORTH);
-        jp.add(centerPanel, BorderLayout.CENTER);
-        jp.add(centerPanel2, BorderLayout.CENTER);
-        jp.add(southPanel, BorderLayout.SOUTH);
-        northPanel.add(yourTurn);
-        centerPanel.add(p1);
-        centerPanel.add(points);
-        centerPanel.add(p2);
 
-        pack();
-//        setSize(350, 300);
-        setVisible(true);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.add(gameGridPanel);
+
+        gameGridPanel.setBorder(BorderFactory.createEtchedBorder());
+        gameGridPanel.add(whoseTurn);
+        whoseTurn.setBackground(Color.red);
+        whoseTurn.setText("vems tur?");
+        whoseTurn.setBorder(BorderFactory.createEtchedBorder());
+        whoseTurn.setHorizontalAlignment(JLabel.CENTER);
+
+
+        gameGridPanel.add(playerPanel);
+        playerPanel.setBorder(BorderFactory.createEtchedBorder());
+        playerPanel.add(playerOne);
+        playerPanel.add(scoreBoard);
+        playerPanel.add(playerTwo);
+
+        gameGridPanel.add(roundsPanel);
+        roundsPanel.setBorder(BorderFactory.createEtchedBorder());
+
+        roundsPanel.add(playerOneGrid);
+        playerOneGrid.setBorder(BorderFactory.createEtchedBorder());
+        playerOneGrid.setBackground(Color.BLUE);
+        roundsPanel.add(scoreboardGrid);
+        scoreboardGrid.setBorder(BorderFactory.createEtchedBorder());
+        roundsPanel.add(playerTwoGrid);
+        playerTwoGrid.setBorder(BorderFactory.createEtchedBorder());
+
+        playerOneGrid.add(plOneQOne);
+        playerOneGrid.add(plOneQTwo);
+        playerOneGrid.add(plOneQThree);
+        playerOneGrid.add(plOneQFour);
+
+        scoreboardGrid.add(genreOne);
+        scoreboardGrid.add(genreTwo);
+
+        playerTwoGrid.add(plTwoQOne);
+        playerTwoGrid.add(plTwoQTwo);
+        playerTwoGrid.add(plTwoQThree);
+        playerTwoGrid.add(plTwoQFour);
+
+
+
+
+        this.setSize(500, 700);
+        this.setVisible(true);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
-        SomeonesTurnResultGUI str = new SomeonesTurnResultGUI();
-    }
+    public static void main(String[] args) {SomeonesTurnResultGUI str = new SomeonesTurnResultGUI();}
 }

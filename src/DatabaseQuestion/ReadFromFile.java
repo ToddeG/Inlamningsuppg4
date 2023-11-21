@@ -28,6 +28,15 @@ public class ReadFromFile {
         }
     }
 
+    public ArrayList<QuestionObject> getQuestionCategoryArrayList(String category){
+        if (category.equals("Musik")){
+            return musicArrayList;
+        }
+        else if (category.equals("Historia")){
+            return historyArrayList;
+        }
+        return null;
+    }
     public ArrayList<QuestionObject> getMusicArrayList() {
         return musicArrayList;
     }

@@ -37,10 +37,4 @@ public class ReadFromFile {
         }
         return null;
     }
-    public ArrayList<QuestionObject> getMusicArrayList() {
-        return musicArrayList;
-    }
-    public ArrayList<QuestionObject> getHistoryArrayList() {
-        return historyArrayList;
-    }
 }

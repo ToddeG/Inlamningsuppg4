@@ -67,6 +67,7 @@ public class TestInterface extends JFrame {
             }
             results[i] = answerTemp[0].equals(questionRound.get(i).getRightOption());
         }
+        this.dispose();
         return results;
     }
 }

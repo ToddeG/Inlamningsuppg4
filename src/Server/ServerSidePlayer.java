@@ -2,6 +2,7 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Objects;
 
 
 /**
@@ -29,6 +30,15 @@ class ServerSidePlayer extends Thread {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outputOject = new ObjectOutputStream(socket.getOutputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
+            if(Objects.equals(player, "1"))
+                output.println("1Du är online, väntar på spelare 2");
+            System.out.println("Spelare nr. : " + player);
+            if (Objects.equals(player, "2")) {
+                System.out.println("inne i if spelare 2 : " + player);
+                output.println("2Du är online, spelare 1 är online också , Välkommen!");
+            }
+
+
 
         } catch (IOException e) {
             System.out.println("Player died: " + e);
@@ -50,6 +60,10 @@ class ServerSidePlayer extends Thread {
     }
 
     public void run() {
+        output.println("Båda är online");
+
+
+
 
     }
 }

@@ -82,5 +82,6 @@ public class SomeonesTurnResultGUI extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public static void main(String[] args) {SomeonesTurnResultGUI str = new SomeonesTurnResultGUI();}
+    public static void main(String[] args) {
+        SomeonesTurnResultGUI str = new SomeonesTurnResultGUI();}
 }

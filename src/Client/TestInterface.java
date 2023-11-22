@@ -1,7 +1,12 @@
 package Client;
 
+import DatabaseQuestion.QuestionObject;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class TestInterface extends JFrame {
 
@@ -9,27 +14,18 @@ public class TestInterface extends JFrame {
     JPanel categoryPanel = new JPanel(new GridLayout(2, 1));
     JPanel questionPanel = new JPanel();
     JPanel answerPanel = new JPanel(new GridLayout(2, 2));
-    JLabel questionNumber = new JLabel("Fråga 1");
-    JLabel category = new JLabel("Musik");
-    JLabel question = new JLabel("Vem sjunger bäst?");
-    JButton jb1 = new JButton("Svar 1");
-    JButton jb2 = new JButton("Svar 2");
-    JButton jb3 = new JButton("Svar 3");
-    JButton jb4 = new JButton("Svar 4");
+    JLabel questionNumber;
+    JLabel category;
+    JLabel question;
+    JButton[] options = new JButton[4];
 
-    TestInterface(){
+    TestInterface() {
 
         this.add(jp);
         jp.add(categoryPanel, BorderLayout.NORTH);
         jp.add(questionPanel, BorderLayout.CENTER);
         jp.add(answerPanel, BorderLayout.SOUTH);
-        categoryPanel.add(questionNumber);
-        categoryPanel.add(category);
-        questionPanel.add(question);
-        answerPanel.add(jb1);
-        answerPanel.add(jb2);
-        answerPanel.add(jb3);
-        answerPanel.add(jb4);
+
 
         //pack();
         setSize(350, 300);
@@ -38,5 +34,39 @@ public class TestInterface extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
+    }
+
+    public boolean[] loadQuestionRound(ArrayList<QuestionObject> questionRound) {
+        boolean[] results = new boolean[questionRound.size()];
+        for (int i = 0; i < questionRound.size(); i++) {
+            final String[] answerTemp = new String[1];
+            categoryPanel.removeAll();
+            questionPanel.removeAll();
+            answerPanel.removeAll();
+            category = new JLabel(questionRound.get(i).getCategory());
+            categoryPanel.add(category);
+            questionNumber = new JLabel("Fråga: " + (i + 1));
+            categoryPanel.add(questionNumber);
+            question = new JLabel(questionRound.get(i).getQuestion());
+            questionPanel.add(question);
+            for (int j = 0; j < options.length; j++) {
+                options[j] = new JButton(questionRound.get(i).getOptionList()[j]);
+                answerPanel.add(options[j]);
+                int finalJ = j;
+                options[j].addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        answerTemp[0] = options[finalJ].getText();
+                    }
+                });
+            }
+            revalidate();
+            repaint();
+            while (answerTemp[0] == null) {
+
+            }
+            results[i] = answerTemp[0].equals(questionRound.get(i).getRightOption());
+        }
+        return results;
     }
 }

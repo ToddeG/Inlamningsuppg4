@@ -63,5 +63,7 @@ class ServerSidePlayer extends Thread {
         output.println("Båda är online");
 
 
+
+
     }
 }

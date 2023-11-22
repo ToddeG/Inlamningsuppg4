@@ -68,6 +68,7 @@ public class QuizkampenClient extends JFrame {
                 playerStatus.setText(inputFromServer);
             }
             while (true){
+                //all kontroll-logik bör ligga här i while-satsen
                 inputFromServer = serverIn.readLine();
                 if(Objects.equals(inputFromServer, "Båda är online")){
                     playerStatus.setText("Båda är online");

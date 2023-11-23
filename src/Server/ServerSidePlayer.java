@@ -53,7 +53,7 @@ class ServerSidePlayer extends Thread {
         outputObject.writeObject(object);
     }
 
-    public String recieveString() throws IOException {
+    public String recieveString() {
         try {
             return input.readLine();
         } catch (IOException e) {
@@ -64,6 +64,10 @@ class ServerSidePlayer extends Thread {
 
     public Object recieveObject() throws IOException, ClassNotFoundException {
         return inputObject.readObject();
+    }
+
+    public void setScore(int round, Boolean[] roundScore){
+        score[round] = roundScore;
     }
 
     /**

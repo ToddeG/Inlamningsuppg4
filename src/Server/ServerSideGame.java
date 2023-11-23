@@ -65,9 +65,11 @@ public class ServerSideGame {
                 currentPlayer.round++;
                 currentPlayer.sendObject(player1.score);
                 currentPlayer.sendObject(player2.score);
+                if(currentPlayer.score[currentPlayer.score.length - 1][0] != null){
+                    middleRound = false;
+                    lastRound = true;
+                }
                 currentPlayer = currentPlayer.getOpponent();
-                middleRound = false;
-                lastRound = true;
             }
             else if(lastRound){
                 currentPlayer.sendObject(currentQuestions);

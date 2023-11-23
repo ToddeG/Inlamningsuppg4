@@ -1,45 +1,39 @@
 package Client;
 
 import DatabaseQuestion.QuestionObject;
-import DatabaseQuestion.ReadFromFile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ChooseCategoryInterface extends JFrame {
 
     JFrame jframe = new JFrame();
 
-    ChooseCategoryInterface(){
+    ChooseCategoryInterface() {
         jframe.setSize(350, 300);
         jframe.setVisible(true);
         jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
         jframe.setLocationRelativeTo(null);
     }
 
-    public String loadChooseCategory(){
+    public String loadChooseCategory(String[] categoriesInput) {
+        jframe.getContentPane().removeAll();
         final String[] categoryTemp = new String[1];
-        while(categoryTemp[0] == null) {
+        while (categoryTemp[0] == null) {
             JPanel basePanel = new JPanel(new BorderLayout());
             JPanel titelPanel = new JPanel();
             JPanel categoryPanel = new JPanel(new GridLayout(3, 1));
             JLabel titleLable = new JLabel("Välj Kategori");
-            JButton[] buttons = new JButton[3];
+            JButton[] buttons = new JButton[categoriesInput.length];
             jframe.add(basePanel);
             basePanel.add(titelPanel, BorderLayout.NORTH);
             basePanel.add(categoryPanel, BorderLayout.SOUTH);
 
-            String[] categories = new String[3];
-            categories[0] = "Musik";
-            categories[1] = "Historia";
-            categories[2] = "Naturvetenskap";
-
             for (int i = 0; i < buttons.length; i++) {
-                buttons[i] = new JButton(categories[i]);
+                buttons[i] = new JButton(categoriesInput[i]);
                 buttons[i].setPreferredSize(new Dimension(300, 75));
                 buttons[i].setFont(new Font("defaultFont", Font.PLAIN, 18));
                 int finalI = i;
@@ -56,12 +50,11 @@ public class ChooseCategoryInterface extends JFrame {
             titelPanel.add(titleLable);
             jframe.setVisible(true);
         }
-        jframe.getContentPane().removeAll();
         return categoryTemp[0];
-
     }
 
-    public boolean[] loadQuestionRound(ArrayList<QuestionObject> questionRound) throws InterruptedException {
+    public Boolean[] loadQuestionRound(ArrayList<QuestionObject> questionRound) throws InterruptedException {
+        jframe.getContentPane().removeAll();
         JPanel basePanel = new JPanel(new BorderLayout());
         JPanel categoryPanel = new JPanel(new GridLayout(2, 1));
         JPanel questionPanel = new JPanel();
@@ -80,7 +73,7 @@ public class ChooseCategoryInterface extends JFrame {
         jframe.revalidate();
         jframe.repaint();
 
-        boolean[] results = new boolean[questionRound.size()];
+        Boolean[] results = new Boolean[questionRound.size()];
         for (int i = 0; i < questionRound.size(); i++) {
 
             final String[] answerTemp = new String[1];
@@ -113,18 +106,81 @@ public class ChooseCategoryInterface extends JFrame {
             }
             results[i] = answerTemp[0].equals(questionRound.get(i).getRightOption());
         }
-        jframe.getContentPane().removeAll();
         return results;
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        ReadFromFile fileReader = new ReadFromFile("src/DatabaseQuestion/QuestionFile.txt");
-        ChooseCategoryInterface client = new ChooseCategoryInterface();
-        String categoryTemp = client.loadChooseCategory();
-        boolean[] results = client.loadQuestionRound(fileReader.getQuestionCategoryArrayList(categoryTemp));
-        String categoryTemp2 = client.loadChooseCategory();
-        boolean[] results2 = client.loadQuestionRound(fileReader.getQuestionCategoryArrayList(categoryTemp2));
-        System.out.println(Arrays.toString(results));
-        System.out.println(Arrays.toString(results2));
+    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score) {
+        jframe.getContentPane().removeAll();
+        JPanel basePanel = new JPanel(new BorderLayout());
+        jframe.add(basePanel);
+        JPanel headerPanel = new JPanel(new GridLayout(2, 1));
+        basePanel.add(headerPanel, BorderLayout.NORTH);
+        JLabel stage = new JLabel("Din tur");
+        headerPanel.add(stage);
+
+        JPanel playerPanel = new JPanel(new GridLayout(1, 3));
+        headerPanel.add(playerPanel);
+
+        JLabel player1Header = new JLabel("Player 1");
+        playerPanel.add(player1Header);
+        JLabel scoreHeader = new JLabel("0 - 0");
+        playerPanel.add(scoreHeader);
+        JLabel player2Header = new JLabel("Player 2");
+        playerPanel.add(player2Header);
+
+        JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));
+        for (int i = 0; i < player1Score.length; i++) {
+            JPanel player1Round = new JPanel(new GridLayout(1, player1Score[i].length));
+            for (int j = 0; j < player1Score[i].length; j++) {
+                JButton score = new JButton();
+                if (player1Score[i][j] == null) {
+                    score.setBackground(Color.gray);
+                } else if (player1Score[i][j]) {
+                    score.setBackground(Color.GREEN);
+                } else if (!player1Score[i][j]) {
+                    score.setBackground(Color.RED);
+                }
+                player1Round.add(score);
+            }
+            scorePanel.add(player1Round);
+            JLabel round = new JLabel(String.valueOf(i + 1));
+            round.setPreferredSize(new Dimension(5, 5));
+            scorePanel.add(round);
+            JPanel player2Round = new JPanel(new GridLayout(1, player2Score[i].length));
+            for (int j = 0; j < player2Score[i].length; j++) {
+                JButton score = new JButton();
+                if (player2Score[i][j] == null) {
+                    score.setBackground(Color.gray);
+                } else if (player2Score[i][j]) {
+                    score.setBackground(Color.GREEN);
+                } else if (!player2Score[i][j]) {
+                    score.setBackground(Color.RED);
+                }
+                player2Round.add(score);
+            }
+            scorePanel.add(player2Round);
+        }
+        basePanel.add(scorePanel, BorderLayout.CENTER);
+
+        JButton playButton = new JButton("Spela");
+        basePanel.add(playButton, BorderLayout.SOUTH);
+        jframe.setVisible(true);
+        jframe.revalidate();
+        jframe.repaint();
     }
+
+    /*public static void main(String[] args){
+        ChooseCategoryInterface client = new ChooseCategoryInterface();
+        ArrayList<Boolean[]> player1Score = new ArrayList<>();
+        ArrayList<Boolean[]> player2Score = new ArrayList<>();
+        for(int i = 0; i < 7; i++){
+            Boolean[] roundScore = new Boolean[3];
+            for(int j = 0; j < roundScore.length; j++){
+                roundScore[j] = null;
+            }
+            player1Score.add(roundScore);
+            player2Score.add(roundScore);
+        }
+        client.loadScoreboard(player1Score, player2Score);
+    }*/
 }

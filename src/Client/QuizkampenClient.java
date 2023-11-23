@@ -1,88 +1,77 @@
 package Client;
 
+import DatabaseQuestion.QuestionObject;
+
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class QuizkampenClient extends JFrame {
 
-    String inputFromServer;
-
-    JPanel jp = new JPanel(new BorderLayout());
-    JPanel categoryPanel = new JPanel(new GridLayout(2, 1));
-    JPanel questionPanel = new JPanel();
-    JPanel answerPanel = new JPanel(new GridLayout(2, 2));
-    JLabel questionNumber = new JLabel("Fråga 1");
-    JLabel category = new JLabel("Musik");
-    JLabel question = new JLabel("Vem sjunger bäst?");
-    JLabel playerStatus = new JLabel();
-
-    JButton jb1 = new JButton("Svar 1");
-    JButton jb2 = new JButton("Svar 2");
-    JButton jb3 = new JButton("Svar 3");
-    JButton jb4 = new JButton("Svar 4");
+    private Socket s;
+    private PrintWriter out;
+    private ObjectOutputStream out1;
+    private BufferedReader serverIn;
+    private ObjectInputStream serverInObject;
+    private BufferedReader userInput;
+    private String player1or2;
 
 
-    public QuizkampenClient() {
+    public QuizkampenClient() throws IOException {
 
-        try (Socket s = new Socket("127.0.0.1", 55555);
-             PrintWriter out = new PrintWriter(s.getOutputStream(),true);
-             ObjectOutputStream out1 = new ObjectOutputStream(s.getOutputStream());
-             BufferedReader serverIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
-             ObjectInputStream serverInObject = new ObjectInputStream(s.getInputStream());
-             BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));)
-        {
+        s = new Socket("127.0.0.1", 55555);
+        out = new PrintWriter(s.getOutputStream(), true);
+        out1 = new ObjectOutputStream(s.getOutputStream());
+        serverIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        serverInObject = new ObjectInputStream(s.getInputStream());
+        userInput = new BufferedReader(new InputStreamReader(System.in));
+    }
 
-            this.add(jp);
-
-            jp.add(categoryPanel, BorderLayout.NORTH);
-            jp.add(questionPanel, BorderLayout.CENTER);
-            jp.add(answerPanel, BorderLayout.SOUTH);
-            categoryPanel.add(playerStatus);
-            categoryPanel.add(questionNumber);
-            categoryPanel.add(category);
-            questionPanel.add(question);
-            answerPanel.add(jb1);
-            answerPanel.add(jb2);
-            answerPanel.add(jb3);
-            answerPanel.add(jb4);
-
-            //pack();
-            setSize(350, 300);
-            setVisible(true);
-            setLocationRelativeTo(null);
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
-            //spelare1
-            inputFromServer = serverIn.readLine();
-            if(inputFromServer.startsWith("1"))
-            {
-                System.out.println("111111111111");
-                System.out.println(inputFromServer);
-                playerStatus.setText(inputFromServer);}
-            //spelare2
-            else if(inputFromServer.startsWith("2")){
-                System.out.println("22222");
-                System.out.println(inputFromServer);
-                playerStatus.setText(inputFromServer);
+    public void play() throws IOException, ClassNotFoundException, InterruptedException {
+        String command;
+        ChooseCategoryInterface client = new ChooseCategoryInterface();
+        int round = 1;
+        setPlayer(serverIn.readLine());
+        System.out.println(player1or2);
+        while (true) {
+            if (round == 1 && player1or2.equals("1")) {
+                out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
+                out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
+                Boolean[][] tempScore1 = (Boolean[][]) serverInObject.readObject();
+                Boolean[][] tempScore2 = (Boolean[][]) serverInObject.readObject();
+                client.loadScoreboard(tempScore1, tempScore2);
+                round++;
             }
-            while (true){
-                //all kontroll-logik bör ligga här i while-satsen
-                inputFromServer = serverIn.readLine();
-                if(Objects.equals(inputFromServer, "Båda är online")){
-                    playerStatus.setText("Båda är online");
-                }
+            else if (round == 2 && player1or2.equals("1")) {
+                out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
+                Boolean[][] tempScore1 = (Boolean[][]) serverInObject.readObject();
+                Boolean[][] tempScore2 = (Boolean[][]) serverInObject.readObject();
+                client.loadScoreboard(tempScore1, tempScore2);
             }
-
-        }
-        catch (IOException e){
-            e.printStackTrace();
+            else if (round == 1 && player1or2.equals("2")) {
+                Boolean[][] tempScore1 = (Boolean[][]) serverInObject.readObject();
+                Boolean[][] tempScore2 = (Boolean[][]) serverInObject.readObject();
+                client.loadScoreboard(tempScore1, tempScore2);
+                round++;
+            }
+            else {
+                out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
+                out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
+                out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
+                Boolean[][] tempScore1 = (Boolean[][]) serverInObject.readObject();
+                Boolean[][] tempScore2 = (Boolean[][]) serverInObject.readObject();
+                client.loadScoreboard(tempScore1, tempScore2);
+            }
         }
     }
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         QuizkampenClient qc = new QuizkampenClient();
+        qc.play();
+    }
+
+    public void setPlayer(String number) {
+        player1or2 = number;
     }
 }

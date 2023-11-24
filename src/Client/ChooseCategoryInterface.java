@@ -24,12 +24,12 @@ public class ChooseCategoryInterface extends JFrame {
         final String[] categoryTemp = new String[1];
         while (categoryTemp[0] == null) {
             JPanel basePanel = new JPanel(new BorderLayout());
-            JPanel titelPanel = new JPanel();
+            JPanel titlePanel = new JPanel();
             JPanel categoryPanel = new JPanel(new GridLayout(3, 1));
-            JLabel titleLable = new JLabel("Välj Kategori");
+            JLabel titleLabel = new JLabel("Välj Kategori");
             JButton[] buttons = new JButton[categoriesInput.length];
             jframe.add(basePanel);
-            basePanel.add(titelPanel, BorderLayout.NORTH);
+            basePanel.add(titlePanel, BorderLayout.NORTH);
             basePanel.add(categoryPanel, BorderLayout.SOUTH);
 
             for (int i = 0; i < buttons.length; i++) {
@@ -46,8 +46,8 @@ public class ChooseCategoryInterface extends JFrame {
                 categoryPanel.add(buttons[i]);
             }
 
-            titleLable.setFont(new Font("defaultFont", Font.PLAIN, 18));
-            titelPanel.add(titleLable);
+            titleLabel.setFont(new Font("defaultFont", Font.PLAIN, 18));
+            titlePanel.add(titleLabel);
             jframe.setVisible(true);
         }
         return categoryTemp[0];

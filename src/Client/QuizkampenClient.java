@@ -1,6 +1,7 @@
 package Client;
 
 import DatabaseQuestion.QuestionObject;
+import POJOs.GameScore;
 
 import javax.swing.*;
 import java.io.*;
@@ -33,35 +34,32 @@ public class QuizkampenClient extends JFrame {
         ChooseCategoryInterface client = new ChooseCategoryInterface();
         int round = 1;
         setPlayer(serverIn.readLine());
-        System.out.println(player1or2);
+        Boolean[][] scorePlayer1;
+        Boolean[][] scorePlayer2;
         while (true) {
             if (round == 1 && player1or2.equals("1")) {
                 out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-                Boolean[][] tempScore1 = (Boolean[][]) serverInObject.readObject();
-                Boolean[][] tempScore2 = (Boolean[][]) serverInObject.readObject();
-                client.loadScoreboard(tempScore1, tempScore2);
+                GameScore gameScore = (GameScore) serverInObject.readObject();
+                client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
                 round++;
             }
             else if (round == 2 && player1or2.equals("1")) {
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-                Boolean[][] tempScore1 = (Boolean[][]) serverInObject.readObject();
-                Boolean[][] tempScore2 = (Boolean[][]) serverInObject.readObject();
-                client.loadScoreboard(tempScore1, tempScore2);
+                GameScore gameScore = (GameScore) serverInObject.readObject();
+                client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
             }
             else if (round == 1 && player1or2.equals("2")) {
-                Boolean[][] tempScore1 = (Boolean[][]) serverInObject.readObject();
-                Boolean[][] tempScore2 = (Boolean[][]) serverInObject.readObject();
-                client.loadScoreboard(tempScore1, tempScore2);
+                GameScore gameScore = (GameScore) serverInObject.readObject();
+                client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
                 round++;
             }
             else {
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-                Boolean[][] tempScore1 = (Boolean[][]) serverInObject.readObject();
-                Boolean[][] tempScore2 = (Boolean[][]) serverInObject.readObject();
-                client.loadScoreboard(tempScore1, tempScore2);
+                GameScore gameScore = (GameScore) serverInObject.readObject();
+                client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
             }
         }
     }

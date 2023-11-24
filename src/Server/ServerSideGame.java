@@ -80,6 +80,7 @@ public class ServerSideGame {
                 currentPlayer.addRound();
                 GameScore gameScore = new GameScore(player1.getScore(), player2.getScore());
                 currentPlayer.sendObject(gameScore);
+                currentPlayer.getOpponent().sendObject(gameScore);
                 lastRound = false;
             }
         }

@@ -40,9 +40,9 @@ public class QuizkampenClient extends JFrame {
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
-                round++;
+                round = 2;
             }
-            else if (round == 2 && player1or2.equals("1")) {
+            else if (round == 3) {
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
@@ -50,7 +50,11 @@ public class QuizkampenClient extends JFrame {
             else if (round == 1 && player1or2.equals("2")) {
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
-                round++;
+                round = 2;
+            }
+            else if (round == 4){
+                GameScore gameScore = (GameScore) serverInObject.readObject();
+                client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
             }
             else {
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
@@ -58,6 +62,14 @@ public class QuizkampenClient extends JFrame {
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
+                if((player1or2.equals("1") && gameScore.getPlayer1Score()[gameScore.getPlayer1Score().length - 1][0] != null)
+                        || (player1or2.equals("2") && gameScore.getPlayer2Score()[gameScore.getPlayer2Score().length - 1][0] != null)){
+                    round = 4;
+                }
+                else if((player1or2.equals("1") && gameScore.getPlayer1Score()[gameScore.getPlayer1Score().length - 2][0] != null)
+                || (player1or2.equals("2") && gameScore.getPlayer2Score()[gameScore.getPlayer2Score().length - 2][0] != null)){
+                    round = 3;
+                }
             }
         }
     }

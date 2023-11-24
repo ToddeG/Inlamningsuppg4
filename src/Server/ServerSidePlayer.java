@@ -32,6 +32,9 @@ class ServerSidePlayer extends Thread {
             outputObject = new ObjectOutputStream(socket.getOutputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
 
+            
+
+
         } catch (IOException e) {
             System.out.println("Player died: " + e);
         }

@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ReadFromFile implements Serializable {
 
@@ -31,10 +33,16 @@ public class ReadFromFile implements Serializable {
 
     public ArrayList<QuestionObject> getQuestionCategoryArrayList(String category){
         if (category.equals("Musik")){
-            return musicArrayList;
+            List<QuestionObject> shuffledlist = new ArrayList<>(musicArrayList);
+            Collections.shuffle(shuffledlist);
+            ArrayList<QuestionObject> randomlist = new ArrayList<>(shuffledlist.subList(0, 3));
+            return randomlist;
         }
         else if (category.equals("Historia")){
-            return historyArrayList;
+            List<QuestionObject> shuffledlist = new ArrayList<>(historyArrayList);
+            Collections.shuffle(shuffledlist);
+            ArrayList<QuestionObject> randomlist = new ArrayList<>(shuffledlist.subList(0, 3));
+            return randomlist;
         }
         return null;
     }

@@ -2,9 +2,11 @@ package Server;
 
 import DatabaseQuestion.QuestionObject;
 import DatabaseQuestion.ReadFromFile;
+import POJOs.GameScore;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ServerSideGame {
 
@@ -13,7 +15,7 @@ public class ServerSideGame {
     ServerSidePlayer currentPlayer;
 
 
-    public ServerSideGame(ServerSidePlayer player1, ServerSidePlayer player2){
+    public ServerSideGame(ServerSidePlayer player1, ServerSidePlayer player2) {
         this.player1 = player1;
         this.player2 = player2;
     }
@@ -22,8 +24,11 @@ public class ServerSideGame {
         ReadFromFile readFromFile = new ReadFromFile("src/DatabaseQuestion/QuestionFile.txt");
         player1.sendString("1");
         player2.sendString("2");
-        String[] categories = new String[3];
 
+        player1.setNumberOfRoundsAndQuestions(2, 3);
+        player2.setNumberOfRoundsAndQuestions(2, 3);
+
+        String[] categories = new String[3];
         categories[0] = "Musik";
         categories[1] = "Historia";
         categories[2] = "Naturvetenskap";
@@ -36,48 +41,46 @@ public class ServerSideGame {
         String command;
         currentPlayer = player1;
 
-        while(true){
-            if(firstRound){
+        while (true) {
+            if (firstRound) {
                 Thread.sleep(50);
-                currentPlayer.getOpponent().sendObject(player1.score);
-                currentPlayer.getOpponent().sendObject(player2.score);
+                GameScore gameScoreTemp = new GameScore(player1.getScore(), player2.getScore());
+                currentPlayer.getOpponent().sendObject(gameScoreTemp);
                 currentPlayer.sendObject(categories);
                 command = currentPlayer.recieveString();
                 currentQuestions = readFromFile.getQuestionCategoryArrayList(command);
                 currentPlayer.sendObject(currentQuestions);
-                currentPlayer.score[currentPlayer.round] = ((Boolean[]) currentPlayer.recieveObject());
-                currentPlayer.round++;
-                currentPlayer.sendObject(player1.score);
-                currentPlayer.sendObject(player2.score);
+                currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
+                currentPlayer.addRound();
+                GameScore gameScore = new GameScore(player1.getScore(), player2.getScore());
+                currentPlayer.sendObject(gameScore);
                 currentPlayer = currentPlayer.getOpponent();
                 firstRound = false;
                 middleRound = true;
-            }
-            else if(middleRound){
+            } else if (middleRound) {
                 currentPlayer.sendObject(currentQuestions);
-                currentPlayer.score[currentPlayer.round] = ((Boolean[]) currentPlayer.recieveObject());
-                currentPlayer.round++;
+                currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
+                currentPlayer.addRound();
                 currentPlayer.sendObject(categories);
                 command = currentPlayer.recieveString();
                 currentQuestions = readFromFile.getQuestionCategoryArrayList(command);
                 currentPlayer.sendObject(currentQuestions);
-                currentPlayer.score[currentPlayer.round] = ((Boolean[]) currentPlayer.recieveObject());
-                currentPlayer.round++;
-                currentPlayer.sendObject(player1.score);
-                currentPlayer.sendObject(player2.score);
-                if(currentPlayer.score[currentPlayer.score.length - 1][0] != null){
+                currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
+                currentPlayer.addRound();
+                GameScore gameScore = new GameScore(player1.getScore(), player2.getScore());
+                currentPlayer.sendObject(gameScore);
+                if (currentPlayer.getScore()[currentPlayer.getScore().length - 1][0] != null) {
                     middleRound = false;
                     lastRound = true;
                 }
                 currentPlayer = currentPlayer.getOpponent();
-            }
-            else if(lastRound){
+            } else if (lastRound) {
                 currentPlayer.sendObject(currentQuestions);
-                currentPlayer.score[currentPlayer.round] = ((Boolean[]) currentPlayer.recieveObject());
-                currentPlayer.round++;
-                currentPlayer.sendObject(categories);
-                currentPlayer.sendObject(player1.score);
-                currentPlayer.sendObject(player2.score);
+                currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
+                currentPlayer.addRound();
+                GameScore gameScore = new GameScore(player1.getScore(), player2.getScore());
+                currentPlayer.sendObject(gameScore);
+                lastRound = false;
             }
         }
     }

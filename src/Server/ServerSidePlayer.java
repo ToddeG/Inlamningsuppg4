@@ -20,13 +20,12 @@ class ServerSidePlayer extends Thread {
     PrintWriter output;
     ObjectOutputStream outputObject;
     ObjectInputStream inputObject;
-    int round = 0;
-    Boolean[][] score;
+    private int round = 0;
+    private Boolean[][] score;
     public ServerSidePlayer(Socket socket, String player) {
         this.socket = socket;
         this.player = player;
 
-        score = new Boolean[7][3];
         try {
             inputObject = new ObjectInputStream(socket.getInputStream());
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -51,6 +50,7 @@ class ServerSidePlayer extends Thread {
 
     public void sendObject(Object object) throws IOException {
         outputObject.writeObject(object);
+        outputObject.reset();
     }
 
     public String recieveString() {
@@ -66,8 +66,24 @@ class ServerSidePlayer extends Thread {
         return inputObject.readObject();
     }
 
+    public void addRound(){
+        round++;
+    }
+
+    public int getRound(){
+        return round;
+    }
+
     public void setScore(int round, Boolean[] roundScore){
         score[round] = roundScore;
+    }
+
+    public void setNumberOfRoundsAndQuestions(int rounds, int questionsPerRound){
+        score = new Boolean[rounds][questionsPerRound];
+    }
+
+    public Boolean[][] getScore(){
+        return score;
     }
 
     /**

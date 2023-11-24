@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ChooseCategoryInterface extends JFrame {
 
@@ -93,7 +94,6 @@ public class ChooseCategoryInterface extends JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         answerTemp[0] = options[finalJ].getText();
-                        System.out.println(answerTemp[0]);
                     }
                 });
                 options[j].setPreferredSize(new Dimension(70, 70));
@@ -160,6 +160,8 @@ public class ChooseCategoryInterface extends JFrame {
             }
             scorePanel.add(player2Round);
         }
+        basePanel.revalidate();
+        basePanel.repaint();
         basePanel.add(scorePanel, BorderLayout.CENTER);
 
         JButton playButton = new JButton("Spela");

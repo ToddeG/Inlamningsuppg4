@@ -4,9 +4,11 @@ import DatabaseQuestion.QuestionObject;
 import DatabaseQuestion.ReadFromFile;
 import POJOs.GameScore;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Properties;
 
 public class ServerSideGame {
 
@@ -25,8 +27,14 @@ public class ServerSideGame {
         player1.sendString("1");
         player2.sendString("2");
 
-        player1.setNumberOfRoundsAndQuestions(4, 3);
-        player2.setNumberOfRoundsAndQuestions(4, 3);
+
+        //Calling method LoadProperties to set nr. of Rounds and Questions per game.
+        int[] properties = LoadProperties();
+        int rounds = properties[0];
+        int questionsPerRound = properties[1];
+
+        player1.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
+        player2.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
 
         String[] categories = new String[3];
         categories[0] = "Musik";
@@ -85,4 +93,28 @@ public class ServerSideGame {
             }
         }
     }
+
+
+
+    // Properties method for setting nr. of Rounds and Questions per game.
+    public int[] LoadProperties(){
+
+        Properties p = new Properties();
+
+        try{
+            p.load(new FileInputStream("src/Server/GameSettings.properties"));
+        }
+
+        catch(Exception e){
+            System.out.println("File not found");
+        }
+
+        int rounds = Integer.parseInt(p.getProperty("rounds", "2"));
+        int questionsPerRound = Integer.parseInt(p.getProperty("questionsPerRound", "2"));
+
+        return new int[]{rounds, questionsPerRound};
+
+    }
+
+
 }

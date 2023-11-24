@@ -34,8 +34,6 @@ public class QuizkampenClient extends JFrame {
         ChooseCategoryInterface client = new ChooseCategoryInterface();
         int round = 1;
         setPlayer(serverIn.readLine());
-        Boolean[][] scorePlayer1;
-        Boolean[][] scorePlayer2;
         while (true) {
             if (round == 1 && player1or2.equals("1")) {
                 out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));

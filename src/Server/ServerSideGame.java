@@ -25,8 +25,8 @@ public class ServerSideGame {
         player1.sendString("1");
         player2.sendString("2");
 
-        player1.setNumberOfRoundsAndQuestions(2, 3);
-        player2.setNumberOfRoundsAndQuestions(2, 3);
+        player1.setNumberOfRoundsAndQuestions(4, 3);
+        player2.setNumberOfRoundsAndQuestions(4, 3);
 
         String[] categories = new String[3];
         categories[0] = "Musik";

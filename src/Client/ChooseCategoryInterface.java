@@ -123,7 +123,7 @@ public class ChooseCategoryInterface extends JFrame {
 
         JLabel player1Header = new JLabel("Player 1");
         playerPanel.add(player1Header);
-        JLabel scoreHeader = new JLabel("0 - 0");
+        JLabel scoreHeader = new JLabel(countScore(player1Score) + " - " + countScore(player2Score));
         playerPanel.add(scoreHeader);
         JLabel player2Header = new JLabel("Player 2");
         playerPanel.add(player2Header);
@@ -171,18 +171,20 @@ public class ChooseCategoryInterface extends JFrame {
         jframe.repaint();
     }
 
-    /*public static void main(String[] args){
-        ChooseCategoryInterface client = new ChooseCategoryInterface();
-        ArrayList<Boolean[]> player1Score = new ArrayList<>();
-        ArrayList<Boolean[]> player2Score = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
-            Boolean[] roundScore = new Boolean[3];
-            for(int j = 0; j < roundScore.length; j++){
-                roundScore[j] = null;
+    public int countScore(Boolean[][] playerScore){
+        int score = 0;
+        for(int i = 0; i < playerScore.length; i++){
+            for(int j = 0; j < playerScore[i].length; j++){
+                try{
+                    if(playerScore[i][j]){
+                        score++;
+                    }
+                }
+                catch (NullPointerException e){
+                    return score;
+                }
             }
-            player1Score.add(roundScore);
-            player2Score.add(roundScore);
         }
-        client.loadScoreboard(player1Score, player2Score);
-    }*/
+        return score;
+    }
 }

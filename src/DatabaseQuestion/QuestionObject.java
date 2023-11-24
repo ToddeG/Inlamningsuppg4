@@ -1,6 +1,8 @@
 package DatabaseQuestion;
 
-public class QuestionObject {
+import java.io.Serializable;
+
+public class QuestionObject implements Serializable {
 
     private String category;
     private String question;

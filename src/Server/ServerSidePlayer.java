@@ -2,7 +2,6 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Objects;
 
 
 /**
@@ -19,26 +18,20 @@ class ServerSidePlayer extends Thread {
     Socket socket;
     BufferedReader input;
     PrintWriter output;
-    ObjectOutputStream outputOject;
+    ObjectOutputStream outputObject;
     ObjectInputStream inputObject;
+    int round = 0;
+    Boolean[][] score;
     public ServerSidePlayer(Socket socket, String player) {
         this.socket = socket;
         this.player = player;
 
+        score = new Boolean[7][3];
         try {
             inputObject = new ObjectInputStream(socket.getInputStream());
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            outputOject = new ObjectOutputStream(socket.getOutputStream());
+            outputObject = new ObjectOutputStream(socket.getOutputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
-            if(Objects.equals(player, "1"))
-                output.println("1Du är online, väntar på spelare 2");
-            System.out.println("Spelare nr. : " + player);
-            if (Objects.equals(player, "2")) {
-                System.out.println("inne i if spelare 2 : " + player);
-                output.println("2Du är online, spelare 1 är online också , Välkommen!");
-            }
-
-
 
         } catch (IOException e) {
             System.out.println("Player died: " + e);
@@ -52,18 +45,39 @@ class ServerSidePlayer extends Thread {
         this.opponent = opponent;
     }
 
+    public void sendString(String message){
+        output.println(message);
+    }
+
+    public void sendObject(Object object) throws IOException {
+        outputObject.writeObject(object);
+    }
+
+    public String recieveString() {
+        try {
+            return input.readLine();
+        } catch (IOException e) {
+            System.out.println("Player " + player +" could not receive data " + e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Object recieveObject() throws IOException, ClassNotFoundException {
+        return inputObject.readObject();
+    }
+
+    public void setScore(int round, Boolean[] roundScore){
+        score[round] = roundScore;
+    }
+
     /**
      * Returns the opponent.
      */
     public ServerSidePlayer getOpponent() {
         return opponent;
     }
-
-    public void run() {
-        output.println("Båda är online");
-
-
-
+    public void run(){
 
     }
+
 }

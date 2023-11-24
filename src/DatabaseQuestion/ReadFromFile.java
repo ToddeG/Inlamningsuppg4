@@ -3,9 +3,10 @@ package DatabaseQuestion;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ReadFromFile {
+public class ReadFromFile implements Serializable {
 
     private ArrayList<QuestionObject> musicArrayList = new ArrayList<>();
     private ArrayList<QuestionObject> historyArrayList = new ArrayList<>();

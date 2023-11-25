@@ -7,6 +7,7 @@ import POJOs.GameScore;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
 public class ServerSideGame {
@@ -22,7 +23,7 @@ public class ServerSideGame {
     }
 
     public void playGame() throws IOException, ClassNotFoundException, InterruptedException {
-        //Calling method LoadProperties to set nr. of Rounds and Questions per game. Test2
+        //Calling method LoadProperties to set nr. of Rounds and Questions per game.
         int[] properties = LoadProperties();
         int rounds = properties[0];
         int questionsPerRound = properties[1];

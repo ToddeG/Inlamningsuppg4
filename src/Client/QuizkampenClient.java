@@ -35,9 +35,9 @@ public class QuizkampenClient extends JFrame {
         boolean lastRoundOpponent = false;
         setPlayer(serverIn.readLine());
         while (true) {
-            if (firstRound && player1or2.equals("1")) { //First round for player 1
+            if (firstRound && player1or2.equals("1")) { //First round for player 1 Test2
                 //Loads GUI with categories from server, sends back the answer
-                out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
+                out.println(client.loadChooseCategory((ArrayList<String>) serverInObject.readObject()));
                 //Loads GUI with questions from server, sends back results
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 //Receives score from server, loads GUI with scoreboard, sets firstRound as false
@@ -66,7 +66,7 @@ public class QuizkampenClient extends JFrame {
                 //Answer the questions the opponent just answered
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 //Choose category
-                out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
+                out.println(client.loadChooseCategory((ArrayList<String>) serverInObject.readObject()));
                 //Answer the questions from the category
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 //Load scoreboard

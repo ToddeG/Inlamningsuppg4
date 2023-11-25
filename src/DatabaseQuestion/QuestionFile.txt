@@ -53,7 +53,7 @@ Städer | Vilken är den senaste delstaten som nådde statsbildning 1959? | Alas
 Städer | I vilket land ligger udda weekendstaden Biarritz? | Frankrike | Litauen | Italien | Serbien | Frankrike
 Städer | I vilket land ligger udda weekendstaden Belgrad? | Serbien | Litauen | Italien | Frankrike | Serbien
 Städer | Hur många delstater i USA som börjar på bokstaven A? | 4 | 5 | 6 | 7 | 4
-Städer | I vilket land ligger udda weekendstaden Biarritz? | Belgien | Litauen | Italien | Serbien | Lucca
+Städer | Vad heter jordens största hav?  | Atlanten | Stilla havet | Indiska oceanen | Antarktiska oceanen | Stilla havet
 Djur | Vad är latinska namnet Vulpes Vulpes för djur? | Räv | Häst | Orm | Får | Räv
 Djur | Hur snabb är världens snabbaste djur? | 299 km/h | 378 km/h | 389 km/h | 289 km/h | 389 km/h
 Djur | Från vilket år är filmen Disneys storfilm Lejonkungen? | 1996 | 1993 | 1994 | 1995 | 1994

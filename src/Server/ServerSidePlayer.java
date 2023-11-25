@@ -4,22 +4,14 @@ import java.io.*;
 import java.net.Socket;
 
 
-/**
- * The class for the helper threads in this multithreaded server
- * application. A Player is identified by a character mark
- * which is either 'X' or 'O'. For communication with the
- * client the player has a socket with its input and output
- * streams. Since only text is being communicated we use a
- * reader and a writer.
- */
 class ServerSidePlayer extends Thread {
-    String player;
-    ServerSidePlayer opponent;
-    Socket socket;
-    BufferedReader input;
-    PrintWriter output;
-    ObjectOutputStream outputObject;
-    ObjectInputStream inputObject;
+    private String player;
+    private ServerSidePlayer opponent;
+    private Socket socket;
+    private BufferedReader input;
+    private PrintWriter output;
+    private ObjectOutputStream outputObject;
+    private ObjectInputStream inputObject;
     private int round = 0;
     private Boolean[][] score;
     public ServerSidePlayer(Socket socket, String player) {
@@ -40,9 +32,7 @@ class ServerSidePlayer extends Thread {
         }
     }
 
-    /**
-     * Accepts notification of who the opponent is.
-     */
+
     public void setOpponent(ServerSidePlayer opponent) {
         this.opponent = opponent;
     }
@@ -89,9 +79,6 @@ class ServerSidePlayer extends Thread {
         return score;
     }
 
-    /**
-     * Returns the opponent.
-     */
     public ServerSidePlayer getOpponent() {
         return opponent;
     }

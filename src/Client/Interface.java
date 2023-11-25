@@ -113,7 +113,7 @@ public class Interface extends JFrame {
                 Thread.sleep(10);
             }
             results[i] = answerTemp[0].equals(questionRound.get(i).getRightOption());
-            Thread.sleep(1500);
+            Thread.sleep(1000);
         }
         return results;
     }

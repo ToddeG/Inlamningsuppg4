@@ -8,15 +8,15 @@ import java.util.ArrayList;
 
 public class ReadFromFile implements Serializable {
 
-    private ArrayList<QuestionObject> musicArrayList = new ArrayList<>();
-    private ArrayList<QuestionObject> historyArrayList = new ArrayList<>();
-    private ArrayList<QuestionObject> drinksArrayList = new ArrayList<>();
-    private ArrayList<QuestionObject> classicProfilesArrayList = new ArrayList<>();
-    private ArrayList<QuestionObject> xmasArrayList = new ArrayList<>();
-    private ArrayList<QuestionObject> randomArrayList = new ArrayList<>();
-    private ArrayList<QuestionObject> numbersArrayList = new ArrayList<>();
-    private ArrayList<QuestionObject> cityArrayList = new ArrayList<>();
-    private ArrayList<QuestionObject> animalArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> musicArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> historyArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> drinksArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> classicProfilesArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> xmasArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> randomArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> numbersArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> cityArrayList = new ArrayList<>();
+    private final ArrayList<QuestionObject> animalArrayList = new ArrayList<>();
 
     public ReadFromFile(String path){
         try (BufferedReader reader = new BufferedReader(new FileReader(path))){
@@ -24,32 +24,16 @@ public class ReadFromFile implements Serializable {
             while((fileInput = reader.readLine()) != null){
                 String[] question = fileInput.split("\\|");
                 QuestionObject temp = new QuestionObject(question);
-                if (temp.getCategory().equals("Musik")){
-                    musicArrayList.add(temp);
-                }
-                else if (temp.getCategory().equals("Historierns vingslag")){
-                    historyArrayList.add(temp);
-                }
-                else if (temp.getCategory().equals("Läskedrycker")){
-                    drinksArrayList.add(temp);
-                }
-                else if (temp.getCategory().equals("Klassiska profiler")){
-                    classicProfilesArrayList.add(temp);
-                }
-                else if (temp.getCategory().equals("Julquiz")){
-                    xmasArrayList.add(temp);
-                }
-                else if (temp.getCategory().equals("Blandat")){
-                    randomArrayList.add(temp);
-                }
-                else if (temp.getCategory().equals("Ge nummer")){
-                    numbersArrayList.add(temp);
-                }
-                else if (temp.getCategory().equals("Städer")){
-                    cityArrayList.add(temp);
-                }
-                else if (temp.getCategory().equals("Djur")){
-                    animalArrayList.add(temp);
+                switch (temp.getCategory()) {
+                    case "Musik" -> musicArrayList.add(temp);
+                    case "Historierns vingslag" -> historyArrayList.add(temp);
+                    case "Läskedrycker" -> drinksArrayList.add(temp);
+                    case "Klassiska profiler" -> classicProfilesArrayList.add(temp);
+                    case "Julquiz" -> xmasArrayList.add(temp);
+                    case "Blandat" -> randomArrayList.add(temp);
+                    case "Ge nummer" -> numbersArrayList.add(temp);
+                    case "Städer" -> cityArrayList.add(temp);
+                    case "Djur" -> animalArrayList.add(temp);
                 }
             }
         } catch (IOException e) {
@@ -58,33 +42,17 @@ public class ReadFromFile implements Serializable {
     }
 
     public ArrayList<QuestionObject> getQuestionCategoryArrayList(String category){
-        if (category.equals("Musik")){
-            return musicArrayList;
-        }
-        else if (category.equals("Historia")){
-            return historyArrayList;
-        }
-        else if (category.equals("Läskedrycker")){
-            return drinksArrayList;
-        }
-        else if (category.equals("Klassiska profiler")){
-            return classicProfilesArrayList;
-        }
-        else if (category.equals("Julen")){
-            return xmasArrayList;
-        }
-        else if (category.equals("Blandat")){
-            return randomArrayList;
-        }
-        else if (category.equals("Ge nummer")){
-            return numbersArrayList;
-        }
-        else if (category.equals("Städer")){
-            return cityArrayList;
-        }
-        else if (category.equals("Djur")){
-            return animalArrayList;
-        }
-        return null;
+        return switch (category) {
+            case "Musik" -> musicArrayList;
+            case "Historia" -> historyArrayList;
+            case "Läskedrycker" -> drinksArrayList;
+            case "Klassiska profiler" -> classicProfilesArrayList;
+            case "Julen" -> xmasArrayList;
+            case "Blandat" -> randomArrayList;
+            case "Ge nummer" -> numbersArrayList;
+            case "Städer" -> cityArrayList;
+            case "Djur" -> animalArrayList;
+            default -> null;
+        };
     }
 }

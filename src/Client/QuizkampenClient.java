@@ -36,7 +36,7 @@ public class QuizkampenClient extends JFrame {
         setPlayer(serverIn.readLine());
         while (true) {
             if (round == 1 && player1or2.equals("1")) {
-                out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
+                out.println(client.loadChooseCategory((ArrayList<String>) serverInObject.readObject()));
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
@@ -58,7 +58,7 @@ public class QuizkampenClient extends JFrame {
             }
             else {
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-                out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
+                out.println(client.loadChooseCategory((ArrayList<String>) serverInObject.readObject()));
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());

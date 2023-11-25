@@ -23,23 +23,17 @@ public class ServerSideGame {
     }
 
     public void playGame() throws IOException, ClassNotFoundException, InterruptedException {
-        ReadFromFile readFromFile = new ReadFromFile("src/DatabaseQuestion/QuestionFile.txt");
-        player1.sendString("1");
-        player2.sendString("2");
-
-
         //Calling method LoadProperties to set nr. of Rounds and Questions per game.
         int[] properties = LoadProperties();
         int rounds = properties[0];
         int questionsPerRound = properties[1];
 
+        ReadFromFile readFromFile = new ReadFromFile("src/DatabaseQuestion/QuestionFile.txt", questionsPerRound);
+        player1.sendString("1");
+        player2.sendString("2");
+
         player1.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
         player2.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
-
-        String[] categories = new String[3];
-        categories[0] = "Musik";
-        categories[1] = "Historia";
-        categories[2] = "Naturvetenskap";
 
         ArrayList<QuestionObject> currentQuestions = null;
 
@@ -51,10 +45,10 @@ public class ServerSideGame {
 
         while (true) {
             if (firstRound) {
-                Thread.sleep(50);
+                Thread.sleep(70);
                 GameScore gameScoreTemp = new GameScore(player1.getScore(), player2.getScore());
                 currentPlayer.getOpponent().sendObject(gameScoreTemp);
-                currentPlayer.sendObject(categories);
+                currentPlayer.sendObject(readFromFile.getCategoryArrayList());
                 command = currentPlayer.recieveString();
                 currentQuestions = readFromFile.getQuestionCategoryArrayList(command);
                 currentPlayer.sendObject(currentQuestions);
@@ -69,7 +63,7 @@ public class ServerSideGame {
                 currentPlayer.sendObject(currentQuestions);
                 currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
                 currentPlayer.addRound();
-                currentPlayer.sendObject(categories);
+                currentPlayer.sendObject(readFromFile.getCategoryArrayList());
                 command = currentPlayer.recieveString();
                 currentQuestions = readFromFile.getQuestionCategoryArrayList(command);
                 currentPlayer.sendObject(currentQuestions);

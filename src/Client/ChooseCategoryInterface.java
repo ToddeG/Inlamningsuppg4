@@ -1,13 +1,12 @@
 package Client;
 
-import DatabaseQuestion.QuestionObject;
+import POJOs.QuestionObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ChooseCategoryInterface extends JFrame {
 
@@ -90,10 +89,19 @@ public class ChooseCategoryInterface extends JFrame {
             for (int j = 0; j < options.length; j++) {
                 options[j] = new JButton(questionRound.get(i).getOptionList()[j]);
                 int finalJ = j;
+                int finalI = i;
                 options[j].addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        answerTemp[0] = options[finalJ].getText();
+                        if (answerTemp[0] == null) {
+                            answerTemp[0] = options[finalJ].getText();
+                            if(answerTemp[0].equals(questionRound.get(finalI).getRightOption())){
+                                options[finalJ].setBackground(Color.GREEN);
+                            }
+                            else{
+                                options[finalJ].setBackground(Color.RED);
+                            }
+                        }
                     }
                 });
                 options[j].setPreferredSize(new Dimension(70, 70));
@@ -105,6 +113,7 @@ public class ChooseCategoryInterface extends JFrame {
                 Thread.sleep(10);
             }
             results[i] = answerTemp[0].equals(questionRound.get(i).getRightOption());
+            Thread.sleep(1500);
         }
         return results;
     }
@@ -171,16 +180,15 @@ public class ChooseCategoryInterface extends JFrame {
         jframe.repaint();
     }
 
-    public int countScore(Boolean[][] playerScore){
+    public int countScore(Boolean[][] playerScore) {
         int score = 0;
-        for(int i = 0; i < playerScore.length; i++){
-            for(int j = 0; j < playerScore[i].length; j++){
-                try{
-                    if(playerScore[i][j]){
+        for (int i = 0; i < playerScore.length; i++) {
+            for (int j = 0; j < playerScore[i].length; j++) {
+                try {
+                    if (playerScore[i][j]) {
                         score++;
                     }
-                }
-                catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     return score;
                 }
             }

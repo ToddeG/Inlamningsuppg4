@@ -23,7 +23,7 @@ public class ServerSideGame {
     }
 
     public void playGame() throws IOException, ClassNotFoundException, InterruptedException {
-        //Calling method LoadProperties to set nr. of Rounds and Questions per game.
+        //Calling method LoadProperties to set nr. of Rounds and Questions per game. Testing
         int[] properties = LoadProperties();
         int rounds = properties[0];
         int questionsPerRound = properties[1];

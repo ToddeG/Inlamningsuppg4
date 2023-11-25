@@ -1,13 +1,12 @@
 package Server;
 
-import DatabaseQuestion.QuestionObject;
+import POJOs.QuestionObject;
 import DatabaseQuestion.ReadFromFile;
 import POJOs.GameScore;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 
 public class ServerSideGame {

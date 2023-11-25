@@ -1,4 +1,4 @@
-package DatabaseQuestion;
+package POJOs;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ public class QuestionObject implements Serializable {
     private String[] optionList = new String[4];
     private String rightOption;
 
-    QuestionObject(String[] fileInfo){
+    public QuestionObject(String[] fileInfo){
         category = fileInfo[0].trim();
         question = fileInfo[1].trim();
         optionList[0] = fileInfo[2].trim();

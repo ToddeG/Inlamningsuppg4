@@ -1,6 +1,6 @@
 package Client;
 
-import DatabaseQuestion.QuestionObject;
+import POJOs.QuestionObject;
 import POJOs.GameScore;
 
 import javax.swing.*;
@@ -15,7 +15,6 @@ public class QuizkampenClient extends JFrame {
     private ObjectOutputStream out1;
     private BufferedReader serverIn;
     private ObjectInputStream serverInObject;
-    private BufferedReader userInput;
     private String player1or2;
 
 
@@ -26,49 +25,60 @@ public class QuizkampenClient extends JFrame {
         out1 = new ObjectOutputStream(s.getOutputStream());
         serverIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
         serverInObject = new ObjectInputStream(s.getInputStream());
-        userInput = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public void play() throws IOException, ClassNotFoundException, InterruptedException {
         String command;
-        ChooseCategoryInterface client = new ChooseCategoryInterface();
-        int round = 1;
+        Interface client = new Interface();
+        boolean firstRound = true;
+        boolean lastPlayerRound = false;
+        boolean lastRoundOpponent = false;
         setPlayer(serverIn.readLine());
         while (true) {
-            if (round == 1 && player1or2.equals("1")) {
+            if (firstRound && player1or2.equals("1")) { //First round for player 1
+                //Loads GUI with categories from server, sends back the answer
                 out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
+                //Loads GUI with questions from server, sends back results
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
+                //Receives score from server, loads GUI with scoreboard, sets firstRound as false
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
-                round = 2;
+                firstRound = false;
             }
-            else if (round == 3) {
+            else if (firstRound && player1or2.equals("2")) { //First round for player 2, only loads scoreboard
+                GameScore gameScore = (GameScore) serverInObject.readObject();
+                client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
+                firstRound = false;
+            }
+            else if (lastPlayerRound) { //Last playing round
+                //Player answers the questions the opponent just answered
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
+                //Loads scoreboard
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
             }
-            else if (round == 1 && player1or2.equals("2")) {
-                GameScore gameScore = (GameScore) serverInObject.readObject();
-                client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
-                round = 2;
-            }
-            else if (round == 4){
+            else if (lastRoundOpponent){ //Last round for the player that didn't play the last round
+                //Only loads scoreboard
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
             }
-            else {
+            else { //Every round that isn't the first or last
+                //Answer the questions the opponent just answered
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
+                //Choose category
                 out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
+                //Answer the questions from the category
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
+                //Load scoreboard
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
-                if((player1or2.equals("1") && gameScore.getPlayer1Score()[gameScore.getPlayer1Score().length - 1][0] != null)
+                if((player1or2.equals("1") && gameScore.getPlayer1Score()[gameScore.getPlayer1Score().length - 1][0] != null) //Checks if the opponent is about to play the last round
                         || (player1or2.equals("2") && gameScore.getPlayer2Score()[gameScore.getPlayer2Score().length - 1][0] != null)){
-                    round = 4;
+                    lastRoundOpponent = true;
                 }
-                else if((player1or2.equals("1") && gameScore.getPlayer1Score()[gameScore.getPlayer1Score().length - 2][0] != null)
+                else if((player1or2.equals("1") && gameScore.getPlayer1Score()[gameScore.getPlayer1Score().length - 2][0] != null)//Checks if this player is about to play the last round
                 || (player1or2.equals("2") && gameScore.getPlayer2Score()[gameScore.getPlayer2Score().length - 2][0] != null)){
-                    round = 3;
+                    lastPlayerRound = true;
                 }
             }
         }

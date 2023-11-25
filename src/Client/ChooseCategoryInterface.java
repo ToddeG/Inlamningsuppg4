@@ -114,7 +114,7 @@ public class ChooseCategoryInterface extends JFrame {
         jframe.add(basePanel);
         JPanel headerPanel = new JPanel(new GridLayout(2, 1));
         basePanel.add(headerPanel, BorderLayout.NORTH);
-        JLabel stage = new JLabel("Din tur");
+        JLabel stage = new JLabel("Deras tur");
         headerPanel.add(stage);
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 3));

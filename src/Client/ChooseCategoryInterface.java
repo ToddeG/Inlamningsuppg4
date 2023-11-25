@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ChooseCategoryInterface extends JFrame {
 
@@ -24,12 +25,12 @@ public class ChooseCategoryInterface extends JFrame {
         final String[] categoryTemp = new String[1];
         while (categoryTemp[0] == null) {
             JPanel basePanel = new JPanel(new BorderLayout());
-            JPanel titelPanel = new JPanel();
+            JPanel titlePanel = new JPanel();
             JPanel categoryPanel = new JPanel(new GridLayout(3, 1));
-            JLabel titleLable = new JLabel("Välj Kategori");
+            JLabel titleLabel = new JLabel("Välj Kategori");
             JButton[] buttons = new JButton[categoriesInput.length];
             jframe.add(basePanel);
-            basePanel.add(titelPanel, BorderLayout.NORTH);
+            basePanel.add(titlePanel, BorderLayout.NORTH);
             basePanel.add(categoryPanel, BorderLayout.SOUTH);
 
             for (int i = 0; i < buttons.length; i++) {
@@ -46,8 +47,8 @@ public class ChooseCategoryInterface extends JFrame {
                 categoryPanel.add(buttons[i]);
             }
 
-            titleLable.setFont(new Font("defaultFont", Font.PLAIN, 18));
-            titelPanel.add(titleLable);
+            titleLabel.setFont(new Font("defaultFont", Font.PLAIN, 18));
+            titlePanel.add(titleLabel);
             jframe.setVisible(true);
         }
         return categoryTemp[0];
@@ -93,7 +94,6 @@ public class ChooseCategoryInterface extends JFrame {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         answerTemp[0] = options[finalJ].getText();
-                        System.out.println(answerTemp[0]);
                     }
                 });
                 options[j].setPreferredSize(new Dimension(70, 70));
@@ -123,7 +123,7 @@ public class ChooseCategoryInterface extends JFrame {
 
         JLabel player1Header = new JLabel("Player 1");
         playerPanel.add(player1Header);
-        JLabel scoreHeader = new JLabel("0 - 0");
+        JLabel scoreHeader = new JLabel(countScore(player1Score) + " - " + countScore(player2Score));
         playerPanel.add(scoreHeader);
         JLabel player2Header = new JLabel("Player 2");
         playerPanel.add(player2Header);
@@ -160,6 +160,8 @@ public class ChooseCategoryInterface extends JFrame {
             }
             scorePanel.add(player2Round);
         }
+        basePanel.revalidate();
+        basePanel.repaint();
         basePanel.add(scorePanel, BorderLayout.CENTER);
 
         JButton playButton = new JButton("Spela");
@@ -169,18 +171,20 @@ public class ChooseCategoryInterface extends JFrame {
         jframe.repaint();
     }
 
-    /*public static void main(String[] args){
-        ChooseCategoryInterface client = new ChooseCategoryInterface();
-        ArrayList<Boolean[]> player1Score = new ArrayList<>();
-        ArrayList<Boolean[]> player2Score = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
-            Boolean[] roundScore = new Boolean[3];
-            for(int j = 0; j < roundScore.length; j++){
-                roundScore[j] = null;
+    public int countScore(Boolean[][] playerScore){
+        int score = 0;
+        for(int i = 0; i < playerScore.length; i++){
+            for(int j = 0; j < playerScore[i].length; j++){
+                try{
+                    if(playerScore[i][j]){
+                        score++;
+                    }
+                }
+                catch (NullPointerException e){
+                    return score;
+                }
             }
-            player1Score.add(roundScore);
-            player2Score.add(roundScore);
         }
-        client.loadScoreboard(player1Score, player2Score);
-    }*/
+        return score;
+    }
 }

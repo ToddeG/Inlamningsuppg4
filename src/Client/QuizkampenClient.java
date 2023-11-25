@@ -1,6 +1,6 @@
 package Client;
 
-import DatabaseQuestion.QuestionObject;
+import POJOs.QuestionObject;
 import POJOs.GameScore;
 
 import javax.swing.*;

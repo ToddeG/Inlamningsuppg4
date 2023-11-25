@@ -15,7 +15,6 @@ public class QuizkampenClient extends JFrame {
     private ObjectOutputStream out1;
     private BufferedReader serverIn;
     private ObjectInputStream serverInObject;
-    private BufferedReader userInput;
     private String player1or2;
 
 
@@ -26,12 +25,11 @@ public class QuizkampenClient extends JFrame {
         out1 = new ObjectOutputStream(s.getOutputStream());
         serverIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
         serverInObject = new ObjectInputStream(s.getInputStream());
-        userInput = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public void play() throws IOException, ClassNotFoundException, InterruptedException {
         String command;
-        ChooseCategoryInterface client = new ChooseCategoryInterface();
+        Interface client = new Interface();
         boolean firstRound = true;
         boolean lastPlayerRound = false;
         boolean lastRoundOpponent = false;
@@ -42,7 +40,7 @@ public class QuizkampenClient extends JFrame {
                 out.println(client.loadChooseCategory((String[]) serverInObject.readObject()));
                 //Loads GUI with questions from server, sends back results
                 out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-                //Recieves score from server, loads GUI with scoreboard, sets firstRound as false
+                //Receives score from server, loads GUI with scoreboard, sets firstRound as false
                 GameScore gameScore = (GameScore) serverInObject.readObject();
                 client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score());
                 firstRound = false;

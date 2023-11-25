@@ -8,11 +8,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class ChooseCategoryInterface extends JFrame {
+public class Interface extends JFrame {
 
     JFrame jframe = new JFrame();
 
-    ChooseCategoryInterface() {
+    Interface() {
         jframe.setSize(350, 300);
         jframe.setVisible(true);
         jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -180,12 +180,13 @@ public class ChooseCategoryInterface extends JFrame {
         jframe.repaint();
     }
 
+    //Counts a players total score
     public int countScore(Boolean[][] playerScore) {
         int score = 0;
-        for (int i = 0; i < playerScore.length; i++) {
-            for (int j = 0; j < playerScore[i].length; j++) {
+        for (Boolean[] booleans : playerScore) {
+            for (Boolean aBoolean : booleans) {
                 try {
-                    if (playerScore[i][j]) {
+                    if (aBoolean) {
                         score++;
                     }
                 } catch (NullPointerException e) {

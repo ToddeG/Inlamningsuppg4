@@ -19,7 +19,7 @@ public class Interface extends JFrame {
         jframe.setLocationRelativeTo(null);
     }
 
-    public String loadChooseCategory(String[] categoriesInput) {
+    public String loadChooseCategory(ArrayList<String> categoriesInput) {
         jframe.getContentPane().removeAll();
         final String[] categoryTemp = new String[1];
         while (categoryTemp[0] == null) {
@@ -27,13 +27,13 @@ public class Interface extends JFrame {
             JPanel titlePanel = new JPanel();
             JPanel categoryPanel = new JPanel(new GridLayout(3, 1));
             JLabel titleLabel = new JLabel("Välj Kategori");
-            JButton[] buttons = new JButton[categoriesInput.length];
+            JButton[] buttons = new JButton[categoriesInput.size()];
             jframe.add(basePanel);
             basePanel.add(titlePanel, BorderLayout.NORTH);
             basePanel.add(categoryPanel, BorderLayout.SOUTH);
 
             for (int i = 0; i < buttons.length; i++) {
-                buttons[i] = new JButton(categoriesInput[i]);
+                buttons[i] = new JButton(categoriesInput.get(i));
                 buttons[i].setPreferredSize(new Dimension(300, 75));
                 buttons[i].setFont(new Font("defaultFont", Font.PLAIN, 18));
                 int finalI = i;

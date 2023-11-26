@@ -84,10 +84,12 @@ public class Interface extends JFrame {
             categoryPanel.add(category);
             questionNumber = new JLabel("Fråga: " + (i + 1));
             categoryPanel.add(questionNumber);
-            question = new JLabel(questionRound.get(i).getQuestion());
+            question = new JLabel();
+            question.setPreferredSize(new Dimension(300, 100));
+            question.setText("<html>" + questionRound.get(i).getQuestion() + "</html>");
             questionPanel.add(question);
             for (int j = 0; j < options.length; j++) {
-                options[j] = new JButton(questionRound.get(i).getOptionList()[j]);
+                options[j] = new JButton("<html>" + questionRound.get(i).getOptionList()[j] + "</html>");
                 int finalJ = j;
                 int finalI = i;
                 options[j].addMouseListener(new MouseAdapter() {
@@ -95,7 +97,7 @@ public class Interface extends JFrame {
                     public void mouseClicked(MouseEvent e) {
                         if (answerTemp[0] == null) {
                             answerTemp[0] = options[finalJ].getText();
-                            if(answerTemp[0].equals(questionRound.get(finalI).getRightOption())){
+                            if(answerTemp[0].equals("<html>" + questionRound.get(finalI).getRightOption() + "</html>")){
                                 options[finalJ].setBackground(Color.GREEN);
                             }
                             else{
@@ -112,19 +114,19 @@ public class Interface extends JFrame {
             while (answerTemp[0] == null) {
                 Thread.sleep(10);
             }
-            results[i] = answerTemp[0].equals(questionRound.get(i).getRightOption());
+            results[i] = answerTemp[0].equals("<html>" + questionRound.get(i).getRightOption() + "</html>");
             Thread.sleep(1000);
         }
         return results;
     }
 
-    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score) {
+    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString) throws InterruptedException {
         jframe.getContentPane().removeAll();
         JPanel basePanel = new JPanel(new BorderLayout());
         jframe.add(basePanel);
         JPanel headerPanel = new JPanel(new GridLayout(2, 1));
         basePanel.add(headerPanel, BorderLayout.NORTH);
-        JLabel stage = new JLabel("Din tur");
+        JLabel stage = new JLabel(stageString);
         headerPanel.add(stage);
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 3));
@@ -146,7 +148,7 @@ public class Interface extends JFrame {
                     score.setBackground(Color.gray);
                 } else if (player1Score[i][j]) {
                     score.setBackground(Color.GREEN);
-                } else if (!player1Score[i][j]) {
+                } else {
                     score.setBackground(Color.RED);
                 }
                 player1Round.add(score);
@@ -162,7 +164,7 @@ public class Interface extends JFrame {
                     score.setBackground(Color.gray);
                 } else if (player2Score[i][j]) {
                     score.setBackground(Color.GREEN);
-                } else if (!player2Score[i][j]) {
+                } else {
                     score.setBackground(Color.RED);
                 }
                 player2Round.add(score);
@@ -173,11 +175,24 @@ public class Interface extends JFrame {
         basePanel.repaint();
         basePanel.add(scorePanel, BorderLayout.CENTER);
 
-        JButton playButton = new JButton("Spela");
-        basePanel.add(playButton, BorderLayout.SOUTH);
+        final boolean[] loop = {false};
+        if(stageString.equals("Din tur att spela")){
+            JButton playButton = new JButton("Spela");
+            loop[0] = true;
+            playButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    loop[0] = false;
+                }
+            });
+            basePanel.add(playButton, BorderLayout.SOUTH);
+        }
         jframe.setVisible(true);
         jframe.revalidate();
         jframe.repaint();
+        while(loop[0]){
+            Thread.sleep(10);
+        }
     }
 
     //Counts a players total score

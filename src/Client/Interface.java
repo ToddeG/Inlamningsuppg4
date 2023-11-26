@@ -120,7 +120,7 @@ public class Interface extends JFrame {
         return results;
     }
 
-    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString) throws InterruptedException {
+    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString, String player1or2) throws InterruptedException {
         jframe.getContentPane().removeAll();
         JPanel basePanel = new JPanel(new BorderLayout());
         jframe.add(basePanel);
@@ -131,12 +131,19 @@ public class Interface extends JFrame {
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 3));
         headerPanel.add(playerPanel);
-
-        JLabel player1Header = new JLabel("Player 1");
+        String player1 = "Spelare 1";
+        String player2 = "Spelare 2";
+        if (player1or2.equals("1")){
+            player1 = player1 + " (Du)";
+        }
+        else if (player1or2.equals("2")){
+            player2 = player2 + " (Du)";
+        }
+        JLabel player1Header = new JLabel(player1);
         playerPanel.add(player1Header);
         JLabel scoreHeader = new JLabel(countScore(player1Score) + " - " + countScore(player2Score));
         playerPanel.add(scoreHeader);
-        JLabel player2Header = new JLabel("Player 2");
+        JLabel player2Header = new JLabel(player2);
         playerPanel.add(player2Header);
 
         JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));

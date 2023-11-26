@@ -3,6 +3,7 @@ package Client;
 import POJOs.QuestionObject;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,6 +37,7 @@ public class Interface extends JFrame {
                 buttons[i] = new JButton(categoriesInput.get(i));
                 buttons[i].setPreferredSize(new Dimension(300, 75));
                 buttons[i].setFont(new Font("defaultFont", Font.PLAIN, 18));
+                buttons[i].setFocusPainted(false);
                 int finalI = i;
                 buttons[i].addMouseListener(new MouseAdapter() {
                     @Override
@@ -81,15 +83,19 @@ public class Interface extends JFrame {
             questionPanel.removeAll();
             answerPanel.removeAll();
             category = new JLabel(questionRound.get(i).getCategory());
+            category.setHorizontalAlignment(SwingConstants.CENTER);
             categoryPanel.add(category);
             questionNumber = new JLabel("Fråga: " + (i + 1));
+            questionNumber.setHorizontalAlignment(SwingConstants.CENTER);
             categoryPanel.add(questionNumber);
             question = new JLabel();
             question.setPreferredSize(new Dimension(300, 100));
             question.setText("<html>" + questionRound.get(i).getQuestion() + "</html>");
+            question.setHorizontalAlignment(SwingConstants.CENTER);
             questionPanel.add(question);
             for (int j = 0; j < options.length; j++) {
                 options[j] = new JButton("<html>" + questionRound.get(i).getOptionList()[j] + "</html>");
+                options[j].setFocusPainted(false);
                 int finalJ = j;
                 int finalI = i;
                 options[j].addMouseListener(new MouseAdapter() {
@@ -127,6 +133,8 @@ public class Interface extends JFrame {
         JPanel headerPanel = new JPanel(new GridLayout(2, 1));
         basePanel.add(headerPanel, BorderLayout.NORTH);
         JLabel stage = new JLabel(stageString);
+        stage.setHorizontalAlignment(SwingConstants.CENTER);
+        stage.setBorder(new EmptyBorder(5,0,10,0));
         headerPanel.add(stage);
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 3));
@@ -140,10 +148,13 @@ public class Interface extends JFrame {
             player2 = player2 + " (Du)";
         }
         JLabel player1Header = new JLabel(player1);
+        player1Header.setHorizontalAlignment(SwingConstants.CENTER);
         playerPanel.add(player1Header);
         JLabel scoreHeader = new JLabel(countScore(player1Score) + " - " + countScore(player2Score));
+        scoreHeader.setHorizontalAlignment(SwingConstants.CENTER);
         playerPanel.add(scoreHeader);
         JLabel player2Header = new JLabel(player2);
+        player2Header.setHorizontalAlignment(SwingConstants.CENTER);
         playerPanel.add(player2Header);
 
         JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));
@@ -163,6 +174,7 @@ public class Interface extends JFrame {
             scorePanel.add(player1Round);
             JLabel round = new JLabel(String.valueOf(i + 1));
             round.setPreferredSize(new Dimension(5, 5));
+            round.setHorizontalAlignment(SwingConstants.CENTER);
             scorePanel.add(round);
             JPanel player2Round = new JPanel(new GridLayout(1, player2Score[i].length));
             for (int j = 0; j < player2Score[i].length; j++) {
@@ -185,6 +197,7 @@ public class Interface extends JFrame {
         final boolean[] loop = {false};
         if(stageString.equals("Din tur att spela")){
             JButton playButton = new JButton("Spela");
+            playButton.setFocusPainted(false);
             loop[0] = true;
             playButton.addMouseListener(new MouseAdapter() {
                 @Override

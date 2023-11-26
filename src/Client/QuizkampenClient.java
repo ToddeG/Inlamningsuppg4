@@ -76,6 +76,7 @@ public class QuizkampenClient extends JFrame {
     }
 
     private void handleFirstRoundPlayer2(Interface client) throws IOException, ClassNotFoundException, InterruptedException {
+        out1.writeObject("");
         GameScore gameScore = (GameScore) serverInObject.readObject();
         client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score(), gameScore.getStatus());
     }

@@ -3,7 +3,8 @@ package Server;
 import java.net.ServerSocket;
 public class QuizkampenServer {
 
-        public static void main(String[] args) throws Exception {ServerSocket listener = new ServerSocket(55555);
+        public static void main(String[] args) throws Exception {
+            ServerSocket listener = new ServerSocket(55555);
             System.out.println("Quizkampen Server is Running");
             try {
                 while (true) {
@@ -12,7 +13,7 @@ public class QuizkampenServer {
                     player1.setOpponent(player2);
                     player2.setOpponent(player1);
                     ServerSideGame game = new ServerSideGame(player1, player2);
-                    game.playGame();
+                    game.start();
                 }
             } finally {
                 listener.close();

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
-public class ServerSideGame {
+public class ServerSideGame extends Thread{
 
     ServerSidePlayer player1;
     ServerSidePlayer player2;
@@ -25,7 +25,7 @@ public class ServerSideGame {
         scoreboardHeader[1] = "Din tur att spela";
     }
 
-    public void playGame() throws IOException, ClassNotFoundException, InterruptedException {
+    public void run() {
         //Calling method LoadProperties to set nr. of Rounds and Questions per game.
         int[] properties = LoadProperties();
         int rounds = properties[0];
@@ -46,17 +46,37 @@ public class ServerSideGame {
         currentPlayer = player1;
         while (true) {
             if (firstRound) {
-                currentQuestions = handleFirstRound(readFromFile);
+                try {
+                    currentQuestions = handleFirstRound(readFromFile);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 firstRound = false;
                 middleRound = true;
             } else if (middleRound) {
-                currentQuestions = handleMiddleRound(readFromFile, currentQuestions);
+                try {
+                    currentQuestions = handleMiddleRound(readFromFile, currentQuestions);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 if (currentPlayer.getOpponent().getScore()[currentPlayer.getOpponent().getScore().length - 1][0] != null) {
                     middleRound = false;
                     lastRound = true;
                 }
             } else if (lastRound) {
-                handleLastRound(currentQuestions);
+                try {
+                    handleLastRound(currentQuestions);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 lastRound = false;
             }
         }
@@ -70,11 +90,13 @@ public class ServerSideGame {
                 scoreboardHeader[0]);
         currentPlayer.getOpponent().sendObject(gameScoreTemp1);
         currentPlayer.sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[1]));
+
         currentPlayer.sendObject(readFromFile.getCategoryArrayList());
         ArrayList<QuestionObject> currentQuestions = readFromFile.getQuestionCategoryArrayList(currentPlayer.recieveString());
         currentPlayer.sendObject(currentQuestions);
         currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
         currentPlayer.addRound();
+
         GameScore gameScoreTemp2 = new GameScore(player1.getScore(), player2.getScore(), scoreboardHeader[0]);
         currentPlayer.getOpponent().sendObject(gameScoreTemp1);
         currentPlayer.sendObject(gameScoreTemp2);
@@ -93,6 +115,7 @@ public class ServerSideGame {
                 Arrays.copyOf(player2.getScore(), player2.getScore().length),
                 scoreboardHeader[1]);
         currentPlayer.sendObject(gameScoreTemp1);
+        currentPlayer.getOpponent().sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[0]));
 
         currentPlayer.sendObject(readFromFile.getCategoryArrayList());
         currentQuestions = readFromFile.getQuestionCategoryArrayList(currentPlayer.recieveString());

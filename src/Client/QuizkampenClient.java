@@ -71,6 +71,8 @@ public class QuizkampenClient extends JFrame {
         //Receives score from server, loads GUI with scoreboard, sets firstRound as false
         GameScore gameScore2 = (GameScore) serverInObject.readObject();
         client.loadScoreboard(gameScore2.getPlayer1Score(), gameScore2.getPlayer2Score(), gameScore2.getStatus());
+        GameScore gameScore0 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore0.getPlayer1Score(), gameScore0.getPlayer2Score(), gameScore0.getStatus());
     }
 
     private void handleFirstRoundPlayer2(Interface client) throws IOException, ClassNotFoundException, InterruptedException {
@@ -95,8 +97,10 @@ public class QuizkampenClient extends JFrame {
     }
 
     private GameScore handleRegularRound(Interface client) throws InterruptedException, IOException, ClassNotFoundException {
+
         GameScore gameScore1 = (GameScore) serverInObject.readObject();
         client.loadScoreboard(gameScore1.getPlayer1Score(), gameScore1.getPlayer2Score(), gameScore1.getStatus());
+
         //Answer the questions the opponent just answered
         out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
 
@@ -109,6 +113,8 @@ public class QuizkampenClient extends JFrame {
         //Load scoreboard
         GameScore gameScore3 = (GameScore) serverInObject.readObject();
         client.loadScoreboard(gameScore3.getPlayer1Score(), gameScore3.getPlayer2Score(), gameScore3.getStatus());
+        GameScore gameScore0 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore0.getPlayer1Score(), gameScore0.getPlayer2Score(), gameScore0.getStatus());
         return gameScore3;
     }
 

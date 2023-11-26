@@ -22,9 +22,9 @@ public class ReadFromFile implements Serializable {
     private final ArrayList<QuestionObject> cityArrayList = new ArrayList<>();
     private final ArrayList<QuestionObject> animalArrayList = new ArrayList<>();
 
-    private int questionsPerRound;
+    private final int questionsPerRound;
 
-    private ArrayList<String> categoryList = new ArrayList<>();
+    private final ArrayList<String> categoryList = new ArrayList<>();
 
     public ReadFromFile(String path, int questionsPerRound){
         categoryList.add("Musik");
@@ -61,64 +61,73 @@ public class ReadFromFile implements Serializable {
     }
 
     public ArrayList<QuestionObject> getQuestionCategoryArrayList(String category) {
-        List<QuestionObject> tempList = null;
+        List<QuestionObject> tempList;
         ArrayList<QuestionObject> tempList2 = new ArrayList<>();
 
         switch (category) {
-            case "Musik":
+            case "Musik" -> {
                 Collections.shuffle(musicArrayList);
-                tempList = musicArrayList.subList(0,questionsPerRound);
+                tempList = musicArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Musik");
                 return tempList2;
-            case "Historiens vingslag":
+            }
+            case "Historiens vingslag" -> {
                 Collections.shuffle(historyArrayList);
-                tempList = historyArrayList.subList(0,questionsPerRound);
+                tempList = historyArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Historiens vingslag");
                 return tempList2;
-            case "Läskedrycker":
+            }
+            case "Läskedrycker" -> {
                 Collections.shuffle(drinksArrayList);
-                tempList = drinksArrayList.subList(0,questionsPerRound);
+                tempList = drinksArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Läskedrycker");
                 return tempList2;
-            case "Klassiska profiler":
+            }
+            case "Klassiska profiler" -> {
                 Collections.shuffle(classicProfilesArrayList);
-                tempList = classicProfilesArrayList.subList(0,questionsPerRound);
+                tempList = classicProfilesArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Klassiska profiler");
                 return tempList2;
-            case "Julquiz":
+            }
+            case "Julquiz" -> {
                 Collections.shuffle(xmasArrayList);
-                tempList = xmasArrayList.subList(0,questionsPerRound);
+                tempList = xmasArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Julquiz");
                 return tempList2;
-            case "Blandat":
+            }
+            case "Blandat" -> {
                 Collections.shuffle(randomArrayList);
-                tempList = randomArrayList.subList(0,questionsPerRound);
+                tempList = randomArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Blandat");
                 return tempList2;
-            case "Ge nummer":
+            }
+            case "Ge nummer" -> {
                 Collections.shuffle(numbersArrayList);
-                tempList = numbersArrayList.subList(0,questionsPerRound);
+                tempList = numbersArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Ge nummer");
                 return tempList2;
-            case "Städer":
+            }
+            case "Städer" -> {
                 Collections.shuffle(cityArrayList);
-                tempList = cityArrayList.subList(0,questionsPerRound);
+                tempList = cityArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Städer");
                 return tempList2;
-            case "Djur":
+            }
+            case "Djur" -> {
                 Collections.shuffle(animalArrayList);
-                tempList = animalArrayList.subList(0,questionsPerRound);
+                tempList = animalArrayList.subList(0, questionsPerRound);
                 tempList2.addAll(tempList);
                 categoryList.remove("Djur");
                 return tempList2;
+            }
         }
         return null;
     }

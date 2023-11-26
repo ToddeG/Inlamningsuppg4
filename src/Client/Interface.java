@@ -120,7 +120,7 @@ public class Interface extends JFrame {
         return results;
     }
 
-    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString) {
+    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString) throws InterruptedException {
         jframe.getContentPane().removeAll();
         JPanel basePanel = new JPanel(new BorderLayout());
         jframe.add(basePanel);
@@ -148,7 +148,7 @@ public class Interface extends JFrame {
                     score.setBackground(Color.gray);
                 } else if (player1Score[i][j]) {
                     score.setBackground(Color.GREEN);
-                } else if (!player1Score[i][j]) {
+                } else {
                     score.setBackground(Color.RED);
                 }
                 player1Round.add(score);
@@ -164,7 +164,7 @@ public class Interface extends JFrame {
                     score.setBackground(Color.gray);
                 } else if (player2Score[i][j]) {
                     score.setBackground(Color.GREEN);
-                } else if (!player2Score[i][j]) {
+                } else {
                     score.setBackground(Color.RED);
                 }
                 player2Round.add(score);
@@ -175,11 +175,24 @@ public class Interface extends JFrame {
         basePanel.repaint();
         basePanel.add(scorePanel, BorderLayout.CENTER);
 
-        JButton playButton = new JButton("Spela");
-        basePanel.add(playButton, BorderLayout.SOUTH);
+        final boolean[] loop = {false};
+        if(stageString.equals("Din tur att spela")){
+            JButton playButton = new JButton("Spela");
+            loop[0] = true;
+            playButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    loop[0] = false;
+                }
+            });
+            basePanel.add(playButton, BorderLayout.SOUTH);
+        }
         jframe.setVisible(true);
         jframe.revalidate();
         jframe.repaint();
+        while(loop[0]){
+            Thread.sleep(10);
+        }
     }
 
     //Counts a players total score

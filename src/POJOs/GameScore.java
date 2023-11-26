@@ -3,15 +3,17 @@ package POJOs;
 import java.io.Serializable;
 
 public class GameScore implements Serializable {
-    private Boolean[][] player1Score;
-    private Boolean[][] player2Score;
-    private int player1ScoreNumber;
-    private int player2ScoreNumber;
-    public GameScore(Boolean[][] player1Score, Boolean[][] player2Score){
+    private final Boolean[][] player1Score;
+    private final Boolean[][] player2Score;
+    private final int player1ScoreNumber;
+    private final int player2ScoreNumber;
+    private String status;
+    public GameScore(Boolean[][] player1Score, Boolean[][] player2Score, String status){
         this.player1Score = player1Score;
         this.player2Score = player2Score;
         player1ScoreNumber = countScore(player1Score);
         player2ScoreNumber = countScore(player2Score);
+        this.status = status;
     }
 
     public int countScore(Boolean[][] playerScore) {
@@ -41,5 +43,12 @@ public class GameScore implements Serializable {
     }
     public int getPlayer2ScoreNumber(){
         return player2ScoreNumber;
+    }
+    public GameScore getGameScoreDifferentStatus(String status){
+        this.status = status;
+        return this;
+    }
+    public String getStatus(){
+        return status;
     }
 }

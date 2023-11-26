@@ -5,9 +5,8 @@ import java.net.Socket;
 
 
 class ServerSidePlayer extends Thread {
-    private String player;
+    private final String player;
     private ServerSidePlayer opponent;
-    private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
     private ObjectOutputStream outputObject;
@@ -15,7 +14,6 @@ class ServerSidePlayer extends Thread {
     private int round = 0;
     private Boolean[][] score;
     public ServerSidePlayer(Socket socket, String player) {
-        this.socket = socket;
         this.player = player;
 
         try {
@@ -23,16 +21,15 @@ class ServerSidePlayer extends Thread {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outputObject = new ObjectOutputStream(socket.getOutputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
-
-            
-
-
         } catch (IOException e) {
             System.out.println("Player died: " + e);
         }
     }
 
 
+    public String getPlayer(){
+        return player;
+    }
     public void setOpponent(ServerSidePlayer opponent) {
         this.opponent = opponent;
     }
@@ -42,6 +39,7 @@ class ServerSidePlayer extends Thread {
     }
 
     public void sendObject(Object object) throws IOException {
+        outputObject.flush();
         outputObject.writeObject(object);
         outputObject.reset();
     }

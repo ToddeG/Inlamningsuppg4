@@ -57,7 +57,7 @@ Städer | Vad heter jordens största hav?  | Atlanten | Stilla havet | Indiska o
 Djur | Vad är latinska namnet Vulpes Vulpes för djur? | Räv | Häst | Orm | Får | Räv
 Djur | Hur snabb är världens snabbaste djur? | 299 km/h | 378 km/h | 389 km/h | 289 km/h | 389 km/h
 Djur | Från vilket år är filmen Disneys storfilm Lejonkungen? | 1996 | 1993 | 1994 | 1995 | 1994
-Djur | Vilket är det största kattdjuret? | Lejon | Tiger | Räv | Leopard | Tigern
+Djur | Vilket är det största kattdjuret? | Lejon | Tiger | Räv | Leopard | Tiger
 Djur | Vilken fågel är världens största fågel? | Struts | Hjälmkasuar |  Enflikig kasuar | Australisk emu | Struts
 Djur | Vilken fågel är världens snabbaste fågel? | Kungsörn | Gyrfalken | Nålsvansen | Pilgrimsfalken | Pilgrimsfalken
 Djur | Hur många miljone djurarter finns det i världen? | 5 | 6 | 7 | 8 | 8

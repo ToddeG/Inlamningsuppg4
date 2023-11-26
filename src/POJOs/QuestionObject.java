@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class QuestionObject implements Serializable {
 
-    private String category;
-    private String question;
-    private String[] optionList = new String[4];
-    private String rightOption;
+    private final String category;
+    private final String question;
+    private final String[] optionList = new String[4];
+    private final String rightOption;
 
     public QuestionObject(String[] fileInfo){
         category = fileInfo[0].trim();

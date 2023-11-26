@@ -36,6 +36,7 @@ public class Interface extends JFrame {
                 buttons[i] = new JButton(categoriesInput.get(i));
                 buttons[i].setPreferredSize(new Dimension(300, 75));
                 buttons[i].setFont(new Font("defaultFont", Font.PLAIN, 18));
+                buttons[i].setFocusPainted(false);
                 int finalI = i;
                 buttons[i].addMouseListener(new MouseAdapter() {
                     @Override
@@ -90,6 +91,7 @@ public class Interface extends JFrame {
             questionPanel.add(question);
             for (int j = 0; j < options.length; j++) {
                 options[j] = new JButton("<html>" + questionRound.get(i).getOptionList()[j] + "</html>");
+                options[j].setFocusPainted(false);
                 int finalJ = j;
                 int finalI = i;
                 options[j].addMouseListener(new MouseAdapter() {
@@ -133,10 +135,13 @@ public class Interface extends JFrame {
         headerPanel.add(playerPanel);
 
         JLabel player1Header = new JLabel("Player 1");
+        player1Header.setHorizontalAlignment(SwingConstants.CENTER);
         playerPanel.add(player1Header);
         JLabel scoreHeader = new JLabel(countScore(player1Score) + " - " + countScore(player2Score));
+        scoreHeader.setHorizontalAlignment(SwingConstants.CENTER);
         playerPanel.add(scoreHeader);
         JLabel player2Header = new JLabel("Player 2");
+        player2Header.setHorizontalAlignment(SwingConstants.CENTER);
         playerPanel.add(player2Header);
 
         JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));
@@ -178,6 +183,7 @@ public class Interface extends JFrame {
         final boolean[] loop = {false};
         if(stageString.equals("Din tur att spela")){
             JButton playButton = new JButton("Spela");
+            playButton.setFocusPainted(false);
             loop[0] = true;
             playButton.addMouseListener(new MouseAdapter() {
                 @Override

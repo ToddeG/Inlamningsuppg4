@@ -84,7 +84,7 @@ public class ServerSideGame extends Thread{
 
     //Method to handle first round
     private ArrayList<QuestionObject> handleFirstRound(ReadFromFile readFromFile) throws IOException, InterruptedException, ClassNotFoundException {
-        Thread.sleep(150);
+        currentPlayer.getOpponent().recieveObject();
         GameScore gameScoreTemp1 = new GameScore(Arrays.copyOf(player1.getScore(), player1.getScore().length),
                 Arrays.copyOf(player2.getScore(), player2.getScore().length),
                 scoreboardHeader[0]);

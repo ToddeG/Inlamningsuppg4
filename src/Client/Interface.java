@@ -36,7 +36,6 @@ public class Interface extends JFrame {
                 buttons[i] = new JButton(categoriesInput.get(i));
                 buttons[i].setPreferredSize(new Dimension(300, 75));
                 buttons[i].setFont(new Font("defaultFont", Font.PLAIN, 18));
-                buttons[i].setFocusPainted(false);
                 int finalI = i;
                 buttons[i].addMouseListener(new MouseAdapter() {
                     @Override
@@ -91,7 +90,6 @@ public class Interface extends JFrame {
             questionPanel.add(question);
             for (int j = 0; j < options.length; j++) {
                 options[j] = new JButton("<html>" + questionRound.get(i).getOptionList()[j] + "</html>");
-                options[j].setFocusPainted(false);
                 int finalJ = j;
                 int finalI = i;
                 options[j].addMouseListener(new MouseAdapter() {
@@ -122,7 +120,7 @@ public class Interface extends JFrame {
         return results;
     }
 
-    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString) throws InterruptedException {
+    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString, String player1or2) throws InterruptedException {
         jframe.getContentPane().removeAll();
         JPanel basePanel = new JPanel(new BorderLayout());
         jframe.add(basePanel);
@@ -133,15 +131,19 @@ public class Interface extends JFrame {
 
         JPanel playerPanel = new JPanel(new GridLayout(1, 3));
         headerPanel.add(playerPanel);
-
-        JLabel player1Header = new JLabel("Player 1");
-        player1Header.setHorizontalAlignment(SwingConstants.CENTER);
+        String player1 = "Spelare 1";
+        String player2 = "Spelare 2";
+        if (player1or2.equals("1")){
+            player1 = player1 + " (Du)";
+        }
+        else if (player1or2.equals("2")){
+            player2 = player2 + " (Du)";
+        }
+        JLabel player1Header = new JLabel(player1);
         playerPanel.add(player1Header);
         JLabel scoreHeader = new JLabel(countScore(player1Score) + " - " + countScore(player2Score));
-        scoreHeader.setHorizontalAlignment(SwingConstants.CENTER);
         playerPanel.add(scoreHeader);
-        JLabel player2Header = new JLabel("Player 2");
-        player2Header.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel player2Header = new JLabel(player2);
         playerPanel.add(player2Header);
 
         JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));
@@ -183,7 +185,6 @@ public class Interface extends JFrame {
         final boolean[] loop = {false};
         if(stageString.equals("Din tur att spela")){
             JButton playButton = new JButton("Spela");
-            playButton.setFocusPainted(false);
             loop[0] = true;
             playButton.addMouseListener(new MouseAdapter() {
                 @Override

@@ -121,7 +121,7 @@ public class Interface extends JFrame {
                 Thread.sleep(10);
             }
             results[i] = answerTemp[0].equals("<html>" + questionRound.get(i).getRightOption() + "</html>");
-            Thread.sleep(1000);
+            Thread.sleep(500);
         }
         return results;
     }
@@ -196,6 +196,7 @@ public class Interface extends JFrame {
 
         final boolean[] loop = {false};
         if(stageString.equals("Din tur att spela")){
+            JPanel jpButtons = new JPanel(new GridLayout(1,2));
             JButton playButton = new JButton("Spela");
             playButton.setFocusPainted(false);
             loop[0] = true;
@@ -205,7 +206,18 @@ public class Interface extends JFrame {
                     loop[0] = false;
                 }
             });
-            basePanel.add(playButton, BorderLayout.SOUTH);
+            JButton giveUp = new JButton("Ge upp");
+            giveUp.setFocusPainted(false);
+            loop[0] = true;
+            giveUp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    System.out.println("Spelare ger upp spelet");
+                }
+            });
+            basePanel.add(jpButtons, BorderLayout.SOUTH);
+            jpButtons.add(playButton);
+            jpButtons.add(giveUp);
         }
         jframe.setVisible(true);
         jframe.revalidate();

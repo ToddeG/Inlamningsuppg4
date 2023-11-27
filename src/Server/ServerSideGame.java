@@ -4,19 +4,20 @@ import POJOs.QuestionObject;
 import DatabaseQuestion.ReadFromFile;
 import POJOs.GameScore;
 
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
-public class ServerSideGame extends Thread{
+public class ServerSideGame extends Thread {
 
     ServerSidePlayer player1;
     ServerSidePlayer player2;
     ServerSidePlayer currentPlayer;
     private final String[] scoreboardHeader = new String[5];
-
 
     public ServerSideGame(ServerSidePlayer player1, ServerSidePlayer player2) {
         this.player1 = player1;
@@ -32,8 +33,8 @@ public class ServerSideGame extends Thread{
         int questionsPerRound = properties[1];
 
         ReadFromFile readFromFile = new ReadFromFile("src/DatabaseQuestion/QuestionFile.txt", questionsPerRound);
-        player1.sendString("1");
-        player2.sendString("2");
+        player1.sendObject("1");
+        player2.sendObject("2");
 
         player1.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
         player2.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
@@ -106,28 +107,29 @@ public class ServerSideGame extends Thread{
 
     //Method to handle all rounds that are not the first or last
     private ArrayList<QuestionObject> handleMiddleRound(ReadFromFile readFromFile, ArrayList<QuestionObject> currentQuestions) throws IOException, ClassNotFoundException {
-        currentPlayer.sendObject(currentQuestions);
+            currentPlayer.sendObject(currentQuestions);
 
-        currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
-        currentPlayer.addRound();
 
-        GameScore gameScoreTemp1 = new GameScore(Arrays.copyOf(player1.getScore(), player1.getScore().length),
-                Arrays.copyOf(player2.getScore(), player2.getScore().length),
-                scoreboardHeader[1]);
-        currentPlayer.sendObject(gameScoreTemp1);
-        currentPlayer.getOpponent().sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[0]));
+            currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
+            currentPlayer.addRound();
 
-        currentPlayer.sendObject(readFromFile.getCategoryArrayList());
-        currentQuestions = readFromFile.getQuestionCategoryArrayList(currentPlayer.recieveString());
-        currentPlayer.sendObject(currentQuestions);
-        currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
-        currentPlayer.addRound();
+            GameScore gameScoreTemp1 = new GameScore(Arrays.copyOf(player1.getScore(), player1.getScore().length),
+                    Arrays.copyOf(player2.getScore(), player2.getScore().length),
+                    scoreboardHeader[1]);
+            currentPlayer.sendObject(gameScoreTemp1);
+            currentPlayer.getOpponent().sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[0]));
 
-        GameScore gameScoreTemp2 = new GameScore(player1.getScore(), player2.getScore(), scoreboardHeader[0]);
-        currentPlayer.sendObject(gameScoreTemp2);
-        currentPlayer = currentPlayer.getOpponent();
-        currentPlayer.sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[1]));
-        return currentQuestions;
+            currentPlayer.sendObject(readFromFile.getCategoryArrayList());
+            currentQuestions = readFromFile.getQuestionCategoryArrayList(currentPlayer.recieveString());
+            currentPlayer.sendObject(currentQuestions);
+            currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
+            currentPlayer.addRound();
+
+            GameScore gameScoreTemp2 = new GameScore(player1.getScore(), player2.getScore(), scoreboardHeader[0]);
+            currentPlayer.sendObject(gameScoreTemp2);
+            currentPlayer = currentPlayer.getOpponent();
+            currentPlayer.sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[1]));
+            return currentQuestions;
     }
 
     //Method to handle last round
@@ -137,15 +139,13 @@ public class ServerSideGame extends Thread{
         currentPlayer.addRound();
         GameScore gameScoreTemp = new GameScore(player1.getScore(), player2.getScore(), scoreboardHeader[0]);
         int winner = checkWhoWon(gameScoreTemp);
-        if((winner == 1 && currentPlayer.getPlayer().equals("1")) || (winner == 2 && currentPlayer.getPlayer().equals("2"))){
+        if ((winner == 1 && currentPlayer.getPlayer().equals("1")) || (winner == 2 && currentPlayer.getPlayer().equals("2"))) {
             currentPlayer.sendObject(gameScoreTemp.getGameScoreDifferentStatus("Du vann"));
             currentPlayer.getOpponent().sendObject(gameScoreTemp.getGameScoreDifferentStatus("Du förlorade"));
-        }
-        else if((winner == 2 && currentPlayer.getPlayer().equals("1")) || (winner == 1 && currentPlayer.getPlayer().equals("2"))){
+        } else if ((winner == 2 && currentPlayer.getPlayer().equals("1")) || (winner == 1 && currentPlayer.getPlayer().equals("2"))) {
             currentPlayer.sendObject(gameScoreTemp.getGameScoreDifferentStatus("Du förlorade"));
             currentPlayer.getOpponent().sendObject(gameScoreTemp.getGameScoreDifferentStatus("Du vann"));
-        }
-        else {
+        } else {
             currentPlayer.sendObject(gameScoreTemp.getGameScoreDifferentStatus("Det blev lika"));
             currentPlayer.getOpponent().sendObject(gameScoreTemp.getGameScoreDifferentStatus("Det blev lika"));
         }
@@ -163,15 +163,13 @@ public class ServerSideGame extends Thread{
     }
 
     // Properties method for setting nr. of Rounds and Questions per game.
-    public int[] LoadProperties(){
+    public int[] LoadProperties() {
 
         Properties p = new Properties();
 
-        try{
+        try {
             p.load(new FileInputStream("src/Server/GameSettings.properties"));
-        }
-
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println("File not found");
         }
 
@@ -181,6 +179,10 @@ public class ServerSideGame extends Thread{
         return new int[]{rounds, questionsPerRound};
 
     }
+
+//    public void gameDisconnected() {
+//        JOptionPane.showMessageDialog(null, "Motspelaren taggade, spelet avbrutet");
+//    }
 
 
 }

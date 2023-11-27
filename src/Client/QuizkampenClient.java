@@ -6,6 +6,7 @@ import POJOs.GameScore;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class QuizkampenClient extends JFrame {
@@ -31,32 +32,33 @@ public class QuizkampenClient extends JFrame {
         boolean firstRound = true;
         boolean lastPlayerRound = false;
         boolean lastRoundOpponent = false;
-        setPlayer(serverIn.readLine());
+        setPlayer((String) serverInObject.readObject());
         while (true) {
-            if (firstRound && player1or2.equals("1")) { //First round for player 1 Test2
-                handleFirstRoundPlayer1(client);
-                firstRound = false;
-            }
-            else if (firstRound && player1or2.equals("2")) { //First round for player 2, only loads scoreboard
-                handleFirstRoundPlayer2(client);
-                firstRound = false;
-            }
-            else if (lastPlayerRound) { //Last playing round
-                handleLastPlayerRound(client);
-            }
-            else if (lastRoundOpponent){ //Last round for the player that didn't play the last round
-                handleLastRoundOpponent(client);
-            }
-            else { //Every round that isn't the first or last
-                GameScore gameScore3 = handleRegularRound(client);
-                if((player1or2.equals("1") && gameScore3.getPlayer1Score()[gameScore3.getPlayer1Score().length - 1][0] != null) //Checks if the opponent is about to play the last round
-                        || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 1][0] != null)){
-                    lastRoundOpponent = true;
+            try {
+                if (firstRound && player1or2.equals("1")) { //First round for player 1 Test2
+                    handleFirstRoundPlayer1(client);
+                    firstRound = false;
+                } else if (firstRound && player1or2.equals("2")) { //First round for player 2, only loads scoreboard
+                    handleFirstRoundPlayer2(client);
+                    firstRound = false;
+                } else if (lastPlayerRound) { //Last playing round
+                    handleLastPlayerRound(client);
+                } else if (lastRoundOpponent) { //Last round for the player that didn't play the last round
+                    handleLastRoundOpponent(client);
+                } else { //Every round that isn't the first or last
+                    GameScore gameScore3 = handleRegularRound(client);
+                    if ((player1or2.equals("1") && gameScore3.getPlayer1Score()[gameScore3.getPlayer1Score().length - 1][0] != null) //Checks if the opponent is about to play the last round
+                            || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 1][0] != null)) {
+                        lastRoundOpponent = true;
+                    } else if ((player1or2.equals("1") && gameScore3.getPlayer1Score()[gameScore3.getPlayer1Score().length - 2][0] != null)//Checks if this player is about to play the last round
+                            || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 2][0] != null)) {
+                        lastPlayerRound = true;
+                    }
                 }
-                else if((player1or2.equals("1") && gameScore3.getPlayer1Score()[gameScore3.getPlayer1Score().length - 2][0] != null)//Checks if this player is about to play the last round
-                || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 2][0] != null)){
-                    lastPlayerRound = true;
-                }
+            } catch (WriteAbortedException e) {
+                System.out.println("Class hittades ej");
+                gameDisconnected();
+                break;
             }
         }
     }
@@ -128,4 +130,7 @@ public class QuizkampenClient extends JFrame {
         player1or2 = number;
     }
 
+    public void gameDisconnected() {
+        JOptionPane.showMessageDialog(null, "Motspelaren taggade, spelet avbrutet");
+    }
 }

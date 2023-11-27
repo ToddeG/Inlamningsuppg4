@@ -4,6 +4,7 @@ import POJOs.QuestionObject;
 import POJOs.GameScore;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -16,6 +17,11 @@ public class QuizkampenClient extends JFrame {
     private final ObjectInputStream serverInObject;
     private String player1or2;
 
+    static boolean firstRound = false;
+    static boolean lastPlayerRound = false;
+    static boolean lastRoundOpponent = false;
+    static boolean startMode = true;
+
 
     public QuizkampenClient() throws IOException {
 
@@ -26,39 +32,45 @@ public class QuizkampenClient extends JFrame {
         serverInObject = new ObjectInputStream(s.getInputStream());
     }
 
-    public void play() throws IOException, ClassNotFoundException, InterruptedException {
+    public void play() throws IOException, ClassNotFoundException, InterruptedException, BadLocationException {
         Interface client = new Interface();
-        boolean firstRound = true;
+        /*boolean firstRound = false;
         boolean lastPlayerRound = false;
         boolean lastRoundOpponent = false;
+        boolean startMode = true;*/
+
         setPlayer(serverIn.readLine());
+
+        if (startMode && player1or2.equals("1")) {
+            client.startMenu();
+        } else if (startMode && player1or2.equals("2")) {
+            client.startMenu();
+        }
         while (true) {
+
+            System.out.println(startMode + " " + firstRound);
             if (firstRound && player1or2.equals("1")) { //First round for player 1 Test2
                 handleFirstRoundPlayer1(client);
                 firstRound = false;
-            }
-            else if (firstRound && player1or2.equals("2")) { //First round for player 2, only loads scoreboard
+            } else if (firstRound && player1or2.equals("2")) { //First round for player 2, only loads scoreboard
                 handleFirstRoundPlayer2(client);
                 firstRound = false;
-            }
-            else if (lastPlayerRound) { //Last playing round
+            } else if (lastPlayerRound) { //Last playing round
                 handleLastPlayerRound(client);
-            }
-            else if (lastRoundOpponent){ //Last round for the player that didn't play the last round
+            } else if (lastRoundOpponent) { //Last round for the player that didn't play the last round
                 handleLastRoundOpponent(client);
-            }
-            else { //Every round that isn't the first or last
+            } else { //Every round that isn't the first or last
                 GameScore gameScore3 = handleRegularRound(client);
-                if((player1or2.equals("1") && gameScore3.getPlayer1Score()[gameScore3.getPlayer1Score().length - 1][0] != null) //Checks if the opponent is about to play the last round
-                        || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 1][0] != null)){
+                if ((player1or2.equals("1") && gameScore3.getPlayer1Score()[gameScore3.getPlayer1Score().length - 1][0] != null) //Checks if the opponent is about to play the last round
+                        || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 1][0] != null)) {
                     lastRoundOpponent = true;
-                }
-                else if((player1or2.equals("1") && gameScore3.getPlayer1Score()[gameScore3.getPlayer1Score().length - 2][0] != null)//Checks if this player is about to play the last round
-                || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 2][0] != null)){
+                } else if ((player1or2.equals("1") && gameScore3.getPlayer1Score()[gameScore3.getPlayer1Score().length - 2][0] != null)//Checks if this player is about to play the last round
+                        || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 2][0] != null)) {
                     lastPlayerRound = true;
                 }
             }
         }
+
     }
 
     private void handleFirstRoundPlayer1(Interface client) throws IOException, ClassNotFoundException, InterruptedException {
@@ -119,7 +131,7 @@ public class QuizkampenClient extends JFrame {
         return gameScore3;
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException, BadLocationException {
         QuizkampenClient qc = new QuizkampenClient();
         qc.play();
     }

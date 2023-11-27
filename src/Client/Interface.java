@@ -7,13 +7,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class Interface extends JFrame {
 
     JFrame jframe = new JFrame();
 
-    Interface() {
+    private ObjectInputStream serverInObject;
+
+    Interface(QuizkampenClient client) {
         JPanel basePanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel();
         JPanel emptyPanel = new JPanel();
@@ -43,10 +46,11 @@ public class Interface extends JFrame {
 
         startButton.addActionListener(e -> {
             if(e.getSource() == startButton){
-                QuizkampenClient.startMode = false;
-                System.out.println("Knapp tryckt");
-                QuizkampenClient.firstRound = true;
-                System.out.println(QuizkampenClient.startMode + " " + QuizkampenClient.firstRound);
+                try {
+                    loadChooseCategory(); //jag vill få in loadChooseCategory() när startbutton trycks, hur får jag till det?
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 

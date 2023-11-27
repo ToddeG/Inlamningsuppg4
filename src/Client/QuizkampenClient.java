@@ -4,6 +4,7 @@ import POJOs.QuestionObject;
 import POJOs.GameScore;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -17,9 +18,12 @@ public class QuizkampenClient extends JFrame {
     private final ObjectInputStream serverInObject;
     private String player1or2;
 
+    static boolean firstRound = false;
+    static boolean lastPlayerRound = false;
+    static boolean lastRoundOpponent = false;
+    static boolean startMode = true;
 
     public QuizkampenClient() throws IOException {
-
         Socket s = new Socket("127.0.0.1", 55555);
         out = new PrintWriter(s.getOutputStream(), true);
         out1 = new ObjectOutputStream(s.getOutputStream());
@@ -33,6 +37,7 @@ public class QuizkampenClient extends JFrame {
         boolean lastPlayerRound = false;
         boolean lastRoundOpponent = false;
         setPlayer((String) serverInObject.readObject());
+
         while (true) {
             try {
                 if (firstRound && player1or2.equals("1")) { //First round for player 1 Test2

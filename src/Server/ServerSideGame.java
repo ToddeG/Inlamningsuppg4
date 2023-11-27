@@ -109,7 +109,6 @@ public class ServerSideGame extends Thread {
     private ArrayList<QuestionObject> handleMiddleRound(ReadFromFile readFromFile, ArrayList<QuestionObject> currentQuestions) throws IOException, ClassNotFoundException {
             currentPlayer.sendObject(currentQuestions);
 
-
             currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
             currentPlayer.addRound();
 

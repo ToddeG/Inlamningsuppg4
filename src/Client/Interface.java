@@ -16,7 +16,8 @@ public class Interface extends JFrame {
 
     private ObjectInputStream serverInObject;
 
-    Interface(QuizkampenClient client) {
+
+    Interface() throws InterruptedException {
         JPanel basePanel = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel();
         JPanel emptyPanel = new JPanel();
@@ -33,7 +34,6 @@ public class Interface extends JFrame {
         jframe.add(emptyPanel, BorderLayout.WEST);
         jframe.add(emptyPanel2, BorderLayout.EAST);
         basePanel.add(messageWindow, BorderLayout.CENTER);
-        messageWindow.setText("Väntar på motståndare");
         basePanel.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
         titelText.setBorder(BorderFactory.createEmptyBorder( 0, 20, 30, 20));
         basePanel.add(titelText, BorderLayout.NORTH);
@@ -44,10 +44,12 @@ public class Interface extends JFrame {
         buttonPanel.add(startButton);
         startButton.setSize(10, 10);
 
+        final boolean[] loop = {true};
+
         startButton.addActionListener(e -> {
             if(e.getSource() == startButton){
                 try {
-                    loadChooseCategory(); //jag vill få in loadChooseCategory() när startbutton trycks, hur får jag till det?
+                    loop[0] = false;
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -58,6 +60,13 @@ public class Interface extends JFrame {
         jframe.setVisible(true);
         jframe.setLocationRelativeTo(null);
         jframe.getDefaultCloseOperation();
+
+        while(loop[0]) {
+            Thread.sleep(10);
+        }
+
+        buttonPanel.remove(startButton);
+        messageWindow.setText("Väntar på motståndare");
     }
 
 

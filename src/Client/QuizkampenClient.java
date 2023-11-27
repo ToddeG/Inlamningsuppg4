@@ -17,8 +17,10 @@ public class QuizkampenClient extends JFrame {
     private final BufferedReader serverIn;
     private final ObjectInputStream serverInObject;
     private String player1or2;
+    Interface client;
 
-    public QuizkampenClient() throws IOException {
+    public QuizkampenClient() throws IOException, InterruptedException {
+        client = new Interface();
         Socket s = new Socket("127.0.0.1", 55555);
         out = new PrintWriter(s.getOutputStream(), true);
         out1 = new ObjectOutputStream(s.getOutputStream());
@@ -27,7 +29,6 @@ public class QuizkampenClient extends JFrame {
     }
 
     public void play() throws IOException, ClassNotFoundException, InterruptedException {
-        Interface client = new Interface(this);
         boolean firstRound = true;
         boolean lastPlayerRound = false;
         boolean lastRoundOpponent = false;

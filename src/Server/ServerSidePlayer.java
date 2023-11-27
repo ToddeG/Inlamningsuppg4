@@ -4,43 +4,32 @@ import java.io.*;
 import java.net.Socket;
 
 
-/**
- * The class for the helper threads in this multithreaded server
- * application. A Player is identified by a character mark
- * which is either 'X' or 'O'. For communication with the
- * client the player has a socket with its input and output
- * streams. Since only text is being communicated we use a
- * reader and a writer.
- */
 class ServerSidePlayer extends Thread {
-    String player;
-    ServerSidePlayer opponent;
-    Socket socket;
-    BufferedReader input;
-    PrintWriter output;
-    ObjectOutputStream outputObject;
-    ObjectInputStream inputObject;
-    int round = 0;
-    Boolean[][] score;
+    private final String player;
+    private ServerSidePlayer opponent;
+    private BufferedReader input;
+    private PrintWriter output;
+    private ObjectOutputStream outputObject;
+    private ObjectInputStream inputObject;
+    private int round = 0;
+    private Boolean[][] score;
     public ServerSidePlayer(Socket socket, String player) {
-        this.socket = socket;
         this.player = player;
 
-        score = new Boolean[7][3];
         try {
             inputObject = new ObjectInputStream(socket.getInputStream());
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outputObject = new ObjectOutputStream(socket.getOutputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
-
         } catch (IOException e) {
             System.out.println("Player died: " + e);
         }
     }
 
-    /**
-     * Accepts notification of who the opponent is.
-     */
+
+    public String getPlayer(){
+        return player;
+    }
     public void setOpponent(ServerSidePlayer opponent) {
         this.opponent = opponent;
     }
@@ -50,7 +39,9 @@ class ServerSidePlayer extends Thread {
     }
 
     public void sendObject(Object object) throws IOException {
+        outputObject.flush();
         outputObject.writeObject(object);
+        outputObject.reset();
     }
 
     public String recieveString() {
@@ -66,13 +57,26 @@ class ServerSidePlayer extends Thread {
         return inputObject.readObject();
     }
 
+    public void addRound(){
+        round++;
+    }
+
+    public int getRound(){
+        return round;
+    }
+
     public void setScore(int round, Boolean[] roundScore){
         score[round] = roundScore;
     }
 
-    /**
-     * Returns the opponent.
-     */
+    public void setNumberOfRoundsAndQuestions(int rounds, int questionsPerRound){
+        score = new Boolean[rounds][questionsPerRound];
+    }
+
+    public Boolean[][] getScore(){
+        return score;
+    }
+
     public ServerSidePlayer getOpponent() {
         return opponent;
     }

@@ -4,9 +4,60 @@ Musik | Vilken av följande är INTE en gitarrmodell? | Stratocaster | SG | Casi
 Musik | Vad heter sångaren i bandet Bon Jovi? | Paul McCartney | Jon Bon Jovi | Mick Jagger | David Bowie | Jon Bon Jovi
 Musik | Om du lyssnar på en walkman vad använder du då? | CD-Spelare | MP3-Spelare | Kassettbandspelare | Mobiltelefon | Kassettbandspelare
 Musik | Vad heter låten som spelades flitigt under fotbolls-VM 1994?  | När vi gräver guld i USA | Nu tar vi dom | Bäst när det gäller | Den glider in | När vi gräver guld i USA
-Historierns vingslag | Vad var en "Galgback" för någonting? |Plats för avrättnng av brottslingar | Tidig form av modevisning | Maträtt | Handelsplats | Plats för avrättning
-Historierns vingslag | Vem myntade begreppet "den osynlige handen"? | Adam Smith | Alfred Marshall | Irving Fischer | Karl Marx | Adam Smith
-Historierns vingslag | Vad hetter staden S.t Petersburg mellan åren 1914 och 1924? | Petrograd | Stalingrad | S:t Petersburg | Leningrad | Petrograd
-Historierns vingslag | Vilken folkslag var normanderna ättlingar till? | Frankerna | Goter | Germanerna | Vikingarna | Plats för avrättning
-Historierns vingslag | Denna diktator erövrade Gallien införde många nya reformer och blev mördad? | Josef Stalin | Julius Caesar | Octavianus Augustus | Adolf Hitler | Julius Caesar
-Historierns vingslag | Vilket år grundades Stockholm? | 1433 | 1387 | 1509 | 1252 | 1252
+Musik | Hur många kolibrier dyker upp och sjunger för Kalle Anka i djungeln? | 2 | 3 | 4 | 5 | 4
+Historiens vingslag | Vad var en "Galgback" för någonting? |Plats för avrättnng av brottslingar | Tidig form av modevisning | Maträtt | Handelsplats | Plats för avrättning
+Historiens vingslag | Vem myntade begreppet "den osynlige handen"? | Adam Smith | Alfred Marshall | Irving Fischer | Karl Marx | Adam Smith
+Historiens vingslag | Vad hetter staden S.t Petersburg mellan åren 1914 och 1924? | Petrograd | Stalingrad | S:t Petersburg | Leningrad | Petrograd
+Historiens vingslag | Vilken folkslag var normanderna ättlingar till? | Frankerna | Goter | Germanerna | Vikingarna | Plats för avrättning
+Historiens vingslag | Denna diktator erövrade Gallien införde många nya reformer och blev mördad? | Josef Stalin | Julius Caesar | Octavianus Augustus | Adolf Hitler | Julius Caesar
+Historiens vingslag | Vilket år grundades Stockholm? | 1433 | 1387 | 1509 | 1252 | 1252
+Historiens vingslag | Vem var svensk kung när Svensk-norska unionen gick i graven? | Oscar II | Karl XV | Gustaf V | Oscar I | Oscar II
+Läskedrycker | Vilket år lanserades Coca Cola Light i Sverige?| 1983 |1980| 1985| 1979 | 1983
+Läskedrycker | TILL-bryggerier saluförde en läsk i smakerna apelsin och citron som för tankarna till ensamhet. Vad hette läsken? | Alpha| Mono | Solo | Apelron | Solo
+Läskedrycker | Hur många buteljer rymdes i den klassiska gröna eller gula drickabacken? | 24 | 25 | 22 | 20 | 25
+Läskedrycker | Konsums bryggeri Wårby sålde en del roliga drickor. Vad smakade till exempel Coco Bahia? (2 smaker) | Kokos och banan | Banan och ananas | Mango och banan | Kokos och ananas | Kokos och ananas
+Läskedrycker | 1985 började Coca Cola och Fanta att säljas i supercan. Vad innebar det? | 500 ml burk | 330 ml burk | 250 ml burk | 300 ml burk | 500 ml burk
+Läskedrycker | Vad betyder RC i RC-Cola? | Red Crown | Red Cola | Royal Crown | Royal Cola | Royal Crown
+Läskedrycker | Under 80-talet sålde Pripps läskedryck under apotekarnesflagg. Smaken var passionsfrukt. Vad hette läskedryckerna? | Lido | Zingo | Frisco | Grappo | Lido
+Klassiska profiler | Vilket år hade tv-programmet Solstollarna premiär? | 1980 | 1983 | 1978 | 1985 | 1985
+Klassiska profiler | Från vilket land kommer den animerade tv-serien "Linus på linjen"? | Italien | Sverige | Grekland | Frankrika | Italien
+Klassiska profiler | Vilken säsong (sträcker sig över 2 årtal) vann Jan Boklöv världscupen i backhoppning? | 89/90 | 88/89 | 87/88 | 86/87 | 88/89
+Klassiska profiler | Vad kallades det speciella trädet i Pippis trädgård? | Vattendricksträdet | Frihetträdet | Sockerdricksträdet | Äppeldricksträdet| Sockerdricksträdet
+Klassiska profiler | Vilket år började reklamen med Iprenmannen sändas? | 2000 |1997 |1998 | 1999 | 1999
+Klassiska profiler | Hur många gånger har Kikki Danielsson varit med i Melodifestivalen? | 8 | 9 | 10 | 11 | 10
+Klassiska profiler | I vilken stad befann sig Carl XVI Gustaf då han sa "Kära Örebroare"? | Arboga | Tyringe | Kungsör | Fellingsbro | Arboga
+Julquiz | Vad betyder ordet ”advent”? | Herrens ankomst | I väntan | Förberedelse | Kommande | Herrens ankomst
+Julquiz | Låten ”Oh helga natt” har på svenska också ett namn efter sin upphovsman, vad kallas låten då? | Emils julvisa | Adams julsång | Idas julvisa | Josefs julsång | Adams julsång
+Julquiz | Idag finns julkalendrar i varianter med choklad och presenter, men när kom den första julkalendern i papp? | 1905 | 1967 | 1939 | 1957 | 1939
+Julquiz | Den 13 december 2008 sattes fyra världsrekord i Rijeka, Kroatien. I  vilken sport? | Simning | Hästsport | Friidrott | Boxing | Simning
+Julquiz | Ungefär hur mycket julskinka äts det per person till jul i Sverige varje år? | 300 g | 1 kg | 580 g | 770 g | 1 kg
+Julquiz | Vad är en vanlig huvudingrediens i den vegetariska varianten av julskinka? | Morot | Rotselleri | Polkabetor | Potatis | Rotselleri
+Julquiz | Den moderna tomten som avbildas i röd dräkt och stort vitt skägg är ursprungligen baserad på St: Nicholas, en ärkebiskop från Myra. I vilket nuvarande land skulle han varit född? | Turkiet | Armenien | Irak | Grekland | Turkiet
+Blandat | Vilket land har flest invånare i världen? | Kina | Inian | USA | Indonesien | Indian
+Blandat | Vad heter den minsta planeten i vårt solsystem? | Mars | Venus | Merkurius | Jorden | Merkurius
+Blandat | Vad heter "Mästerdetektiven Blomkvist" i förnamn? | Anders | Kalle | Gustav | Olle | Kalle
+Blandat | Vilket land ligger mellan Spanien och Frankrike? | Andorra | Italian | Schwiez | Portugal | Andorra
+Blandat | Vilket land är världens minsta till ytan? | Tuvalu | Nauru | Monaco | Vatikanstaten | Vatikanstaten
+Blandat | Vilket år invigdes Västerbron i Stockholm? | 1935 | 1936 | 1937 | 1940 | 1935
+Blandat | Vilken är den största planeten i vårt solsystem? | Uranus | Saturnus | Jupiter | Jorden | Jupiter
+Ge nummer | Hur många platser finns det i riksdagen? | 249 | 351 | 349 | 365 | 349
+Ge nummer | Romerska siffrorna IX betyder? | 9 | 11 | 6 | 4 | 9
+Ge nummer | Hur många rövare fanns i det i boken om Ali Baba? | 30 | 35 | 40 | 45 | 40
+Ge nummer | Hur många rutor finns det på en schackbräda? | 81 | 49 | 64 | 100 | 64
+Ge nummer | Hur många delstater finns det i USA? | 48 | 49 | 51 | 50 | 50
+Ge nummer | Vilket nummer hade snyggingen David Beckham på ryggen när han spelade för Manchester United? | 10 | 11 | 9 | 7 | 7
+Ge nummer | Hur många nollor har talet en biljon? | 12 | 11 | 10 | 13 | 12
+Städer | Vilket land är huvudstad för Bogota? | Colombia | Uruguay | Ecuador | Argentina | Colombia
+Städer | Vilket land är huvudstad för Lima? | Colombia | Uruguay | Ecuador | Peru | Peru
+Städer | Vilken är den senaste delstaten som nådde statsbildning 1959? | Alaska | Hawaii | Arizona | Arkansas | Hawaii
+Städer | I vilket land ligger udda weekendstaden Biarritz? | Frankrike | Litauen | Italien | Serbien | Frankrike
+Städer | I vilket land ligger udda weekendstaden Belgrad? | Serbien | Litauen | Italien | Frankrike | Serbien
+Städer | Hur många delstater i USA som börjar på bokstaven A? | 4 | 5 | 6 | 7 | 4
+Städer | Vad heter jordens största hav?  | Atlanten | Stilla havet | Indiska oceanen | Antarktiska oceanen | Stilla havet
+Djur | Vad är latinska namnet Vulpes Vulpes för djur? | Räv | Häst | Orm | Får | Räv
+Djur | Hur snabb är världens snabbaste djur? | 299 km/h | 378 km/h | 389 km/h | 289 km/h | 389 km/h
+Djur | Från vilket år är filmen Disneys storfilm Lejonkungen? | 1996 | 1993 | 1994 | 1995 | 1994
+Djur | Vilket är det största kattdjuret? | Lejon | Tiger | Räv | Leopard | Tiger
+Djur | Vilken fågel är världens största fågel? | Struts | Hjälmkasuar |  Enflikig kasuar | Australisk emu | Struts
+Djur | Vilken fågel är världens snabbaste fågel? | Kungsörn | Gyrfalken | Nålsvansen | Pilgrimsfalken | Pilgrimsfalken
+Djur | Hur många miljone djurarter finns det i världen? | 5 | 6 | 7 | 8 | 8

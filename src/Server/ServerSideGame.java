@@ -32,8 +32,8 @@ public class ServerSideGame extends Thread{
         int questionsPerRound = properties[1];
 
         ReadFromFile readFromFile = new ReadFromFile("src/DatabaseQuestion/QuestionFile.txt", questionsPerRound);
-        player1.sendString("1");
-        player2.sendString("2");
+        player1.sendObject("1");
+        player2.sendObject("2");
 
         player1.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
         player2.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
@@ -85,56 +85,31 @@ public class ServerSideGame extends Thread{
     //Method to handle first round
     private ArrayList<QuestionObject> handleFirstRound(ReadFromFile readFromFile) throws IOException, InterruptedException, ClassNotFoundException {
         currentPlayer.getOpponent().recieveObject();
-        GameScore gameScoreTemp1 = new GameScore(Arrays.copyOf(player1.getScore(), player1.getScore().length),
-                Arrays.copyOf(player2.getScore(), player2.getScore().length),
-                scoreboardHeader[0]);
-        currentPlayer.getOpponent().sendObject(gameScoreTemp1);
-        currentPlayer.sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[1]));
+        GameScore gameScoreTemp = sendBothPlayersScoreboard();
 
-        currentPlayer.sendObject(readFromFile.getCategoryArrayList());
-        ArrayList<QuestionObject> currentQuestions = readFromFile.getQuestionCategoryArrayList(currentPlayer.recieveString());
-        currentPlayer.sendObject(currentQuestions);
-        currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
-        currentPlayer.addRound();
+        ArrayList<QuestionObject> currentQuestions = sendCategoriesLoadQuestions(readFromFile);
+        sendQuestionsReceiveScore(currentQuestions);
 
-        GameScore gameScoreTemp2 = new GameScore(player1.getScore(), player2.getScore(), scoreboardHeader[0]);
-        currentPlayer.getOpponent().sendObject(gameScoreTemp1);
-        currentPlayer.sendObject(gameScoreTemp2);
-        currentPlayer = currentPlayer.getOpponent();
+        sendPlayersDifferentScoreboards(gameScoreTemp);
         return currentQuestions;
     }
 
     //Method to handle all rounds that are not the first or last
     private ArrayList<QuestionObject> handleMiddleRound(ReadFromFile readFromFile, ArrayList<QuestionObject> currentQuestions) throws IOException, ClassNotFoundException {
-        currentPlayer.sendObject(currentQuestions);
+        sendQuestionsReceiveScore(currentQuestions);
 
-        currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
-        currentPlayer.addRound();
+        GameScore gameScoreTemp = sendBothPlayersScoreboard();
 
-        GameScore gameScoreTemp1 = new GameScore(Arrays.copyOf(player1.getScore(), player1.getScore().length),
-                Arrays.copyOf(player2.getScore(), player2.getScore().length),
-                scoreboardHeader[1]);
-        currentPlayer.sendObject(gameScoreTemp1);
-        currentPlayer.getOpponent().sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[0]));
+        currentQuestions = sendCategoriesLoadQuestions(readFromFile);
+        sendQuestionsReceiveScore(currentQuestions);
 
-        currentPlayer.sendObject(readFromFile.getCategoryArrayList());
-        currentQuestions = readFromFile.getQuestionCategoryArrayList(currentPlayer.recieveString());
-        currentPlayer.sendObject(currentQuestions);
-        currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
-        currentPlayer.addRound();
-
-        GameScore gameScoreTemp2 = new GameScore(player1.getScore(), player2.getScore(), scoreboardHeader[0]);
-        currentPlayer.sendObject(gameScoreTemp2);
-        currentPlayer = currentPlayer.getOpponent();
-        currentPlayer.sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[1]));
+        sendPlayersDifferentScoreboards(gameScoreTemp);
         return currentQuestions;
     }
 
     //Method to handle last round
     private void handleLastRound(ArrayList<QuestionObject> currentQuestions) throws IOException, ClassNotFoundException {
-        currentPlayer.sendObject(currentQuestions);
-        currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
-        currentPlayer.addRound();
+        sendQuestionsReceiveScore(currentQuestions);
         GameScore gameScoreTemp = new GameScore(player1.getScore(), player2.getScore(), scoreboardHeader[0]);
         int winner = checkWhoWon(gameScoreTemp);
         if((winner == 1 && currentPlayer.getPlayer().equals("1")) || (winner == 2 && currentPlayer.getPlayer().equals("2"))){
@@ -149,6 +124,33 @@ public class ServerSideGame extends Thread{
             currentPlayer.sendObject(gameScoreTemp.getGameScoreDifferentStatus("Det blev lika"));
             currentPlayer.getOpponent().sendObject(gameScoreTemp.getGameScoreDifferentStatus("Det blev lika"));
         }
+    }
+
+    public void sendQuestionsReceiveScore(ArrayList<QuestionObject> currentQuestions) throws IOException, ClassNotFoundException {
+        currentPlayer.sendObject(currentQuestions);
+        currentPlayer.setScore(currentPlayer.getRound(), ((Boolean[]) currentPlayer.recieveObject()));
+        currentPlayer.addRound();
+    }
+
+    public ArrayList<QuestionObject> sendCategoriesLoadQuestions(ReadFromFile readFromFile) throws IOException {
+        currentPlayer.sendObject(readFromFile.getCategoryArrayList());
+        return readFromFile.getQuestionCategoryArrayList(currentPlayer.recieveString());
+    }
+
+    public GameScore sendBothPlayersScoreboard() throws IOException {
+        GameScore gameScoreTemp = new GameScore(Arrays.copyOf(player1.getScore(), player1.getScore().length),
+                Arrays.copyOf(player2.getScore(), player2.getScore().length),
+                scoreboardHeader[1]);
+        currentPlayer.sendObject(gameScoreTemp);
+        currentPlayer.getOpponent().sendObject(gameScoreTemp.getGameScoreDifferentStatus(scoreboardHeader[0]));
+        return gameScoreTemp;
+    }
+
+    public void sendPlayersDifferentScoreboards(GameScore gameScoreTemp1) throws IOException {
+        GameScore gameScoreTemp2 = new GameScore(player1.getScore(), player2.getScore(), scoreboardHeader[0]);
+        currentPlayer.sendObject(gameScoreTemp2);
+        currentPlayer = currentPlayer.getOpponent();
+        currentPlayer.sendObject(gameScoreTemp1.getGameScoreDifferentStatus(scoreboardHeader[1]));
     }
 
     //Method to determine winner

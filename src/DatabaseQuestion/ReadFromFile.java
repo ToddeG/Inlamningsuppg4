@@ -135,9 +135,8 @@ public class ReadFromFile implements Serializable {
     public ArrayList<String> getCategoryArrayList() {
         Collections.shuffle(categoryList);
         List<String> tempList = categoryList.subList(0,3);
-        ArrayList<String> tempList2 = new ArrayList<>();
 
-        tempList2.addAll(tempList);
+        ArrayList<String> tempList2 = new ArrayList<>(tempList);
         return tempList2;
     }
 }

@@ -19,7 +19,6 @@ public class QuizkampenServer {
                 // listener.close();
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
         }
     }

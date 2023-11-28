@@ -4,7 +4,6 @@ import POJOs.QuestionObject;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -160,36 +159,12 @@ public class Interface extends JFrame {
 
         JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));
         for (int i = 0; i < player1Score.length; i++) {
-            JPanel player1Round = new JPanel(new GridLayout(1, player1Score[i].length));
-            for (int j = 0; j < player1Score[i].length; j++) {
-                JButton score = new JButton();
-                if (player1Score[i][j] == null) {
-                    score.setBackground(Color.gray);
-                } else if (player1Score[i][j]) {
-                    score.setBackground(Color.GREEN);
-                } else {
-                    score.setBackground(Color.RED);
-                }
-                player1Round.add(score);
-            }
-            scorePanel.add(player1Round);
+            loadScoreboardButtons(scorePanel, player1Score, i);
             JLabel round = new JLabel(String.valueOf(i + 1));
             round.setPreferredSize(new Dimension(5, 5));
             round.setHorizontalAlignment(SwingConstants.CENTER);
             scorePanel.add(round);
-            JPanel player2Round = new JPanel(new GridLayout(1, player2Score[i].length));
-            for (int j = 0; j < player2Score[i].length; j++) {
-                JButton score = new JButton();
-                if (player2Score[i][j] == null) {
-                    score.setBackground(Color.gray);
-                } else if (player2Score[i][j]) {
-                    score.setBackground(Color.GREEN);
-                } else {
-                    score.setBackground(Color.RED);
-                }
-                player2Round.add(score);
-            }
-            scorePanel.add(player2Round);
+            loadScoreboardButtons(scorePanel, player2Score, i);
         }
         basePanel.revalidate();
         basePanel.repaint();
@@ -214,6 +189,21 @@ public class Interface extends JFrame {
         while(loop[0]){
             Thread.sleep(10);
         }
+    }
+    public void loadScoreboardButtons(JPanel scorePanel, Boolean[][] playerScore, int i){
+        JPanel player1Round = new JPanel(new GridLayout(1, playerScore[i].length));
+        for (int j = 0; j < playerScore[i].length; j++) {
+            JButton score = new JButton();
+            if (playerScore[i][j] == null) {
+                score.setBackground(Color.gray);
+            } else if (playerScore[i][j]) {
+                score.setBackground(Color.GREEN);
+            } else {
+                score.setBackground(Color.RED);
+            }
+            player1Round.add(score);
+        }
+        scorePanel.add(player1Round);
     }
 
     //Counts a players total score
@@ -274,11 +264,10 @@ public class Interface extends JFrame {
         jframe.setVisible(true);
         jframe.revalidate();
         jframe.repaint();
-        jframe.getDefaultCloseOperation();
 
     }
 
-    public static void main(String[] args) throws BadLocationException {
+    public static void main(String[] args) {
         Interface i = new Interface();
         i.startMenu();
     }

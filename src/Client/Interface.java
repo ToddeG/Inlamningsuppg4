@@ -6,8 +6,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -265,14 +263,14 @@ public class Interface extends JFrame {
         buttonPanel.add(startButton);
         startButton.setSize(10, 10);
 
-        startButton.addActionListener(e -> {
+        /*startButton.addActionListener(e -> {
             if(e.getSource() == startButton){
                 QuizkampenClient.startMode = false;
                 System.out.println("Knapp tryckt");
                 QuizkampenClient.firstRound = true;
                 System.out.println(QuizkampenClient.startMode + " " + QuizkampenClient.firstRound);
             }
-        });
+        });*/
         jframe.setVisible(true);
         jframe.revalidate();
         jframe.repaint();

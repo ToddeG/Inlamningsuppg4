@@ -57,7 +57,7 @@ public class QuizkampenClient extends JFrame {
                     }
                 }
             } catch (WriteAbortedException e) {
-                System.out.println("Class hittades ej");
+                e.getStackTrace();
                 gameDisconnected();
                 break;
             }
@@ -132,6 +132,6 @@ public class QuizkampenClient extends JFrame {
     }
 
     public void gameDisconnected() {
-        JOptionPane.showMessageDialog(null, "Motspelaren taggade, spelet avbrutet");
+        JOptionPane.showMessageDialog(null, "Motspelaren har avslutat spelet, spelet avbrutet");
     }
 }

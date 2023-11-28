@@ -35,16 +35,13 @@ class ServerSidePlayer extends Thread {
         this.opponent = opponent;
     }
 
-    public void sendString(String message){
-        output.println(message);
-    }
-
     public void sendObject(Object object) {
         try {
             outputObject.flush();
             outputObject.writeObject(object);
             outputObject.reset();
         } catch (IOException e) {
+            e.getStackTrace();
             Disconnected d = new Disconnected();
             opponent.sendObject(d);
         }

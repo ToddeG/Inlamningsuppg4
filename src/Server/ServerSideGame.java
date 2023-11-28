@@ -178,10 +178,4 @@ public class ServerSideGame extends Thread {
         return new int[]{rounds, questionsPerRound};
 
     }
-
-//    public void gameDisconnected() {
-//        JOptionPane.showMessageDialog(null, "Motspelaren taggade, spelet avbrutet");
-//    }
-
-
 }

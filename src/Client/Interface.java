@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
@@ -59,7 +60,7 @@ public class Interface extends JFrame {
         jframe.setSize(350,300);
         jframe.setVisible(true);
         jframe.setLocationRelativeTo(null);
-        jframe.getDefaultCloseOperation();
+        jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         while(loop[0]) {
             Thread.sleep(10);
@@ -263,7 +264,8 @@ public class Interface extends JFrame {
             giveUp.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println("Spelare ger upp spelet");
+                    JOptionPane.showMessageDialog(null, "Är du säker?");
+                    jframe.dispatchEvent(new WindowEvent(jframe, WindowEvent.WINDOW_CLOSING));
                 }
             });
             basePanel.add(jpButtons, BorderLayout.SOUTH);

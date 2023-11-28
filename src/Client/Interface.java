@@ -8,14 +8,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class Interface extends JFrame {
 
     JFrame jframe = new JFrame();
-
-    private ObjectInputStream serverInObject;
 
 
     Interface() throws InterruptedException {
@@ -49,11 +46,7 @@ public class Interface extends JFrame {
 
         startButton.addActionListener(e -> {
             if(e.getSource() == startButton){
-                try {
                     loop[0] = false;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
             }
         });
 

@@ -4,8 +4,10 @@ import POJOs.QuestionObject;
 import POJOs.GameScore;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class QuizkampenClient extends JFrame {
@@ -15,15 +17,10 @@ public class QuizkampenClient extends JFrame {
     private final BufferedReader serverIn;
     private final ObjectInputStream serverInObject;
     private String player1or2;
+    Interface client;
 
-    /*static boolean firstRound = false;
-    static boolean lastPlayerRound = false;
-    static boolean lastRoundOpponent = false;
-    static boolean startMode = true;*/
-
-
-    public QuizkampenClient() throws IOException {
-
+    public QuizkampenClient() throws IOException, InterruptedException {
+        client = new Interface();
         Socket s = new Socket("127.0.0.1", 55555);
         out = new PrintWriter(s.getOutputStream(), true);
         out1 = new ObjectOutputStream(s.getOutputStream());
@@ -36,15 +33,8 @@ public class QuizkampenClient extends JFrame {
         boolean firstRound = true;
         boolean lastPlayerRound = false;
         boolean lastRoundOpponent = false;
-        //boolean startMode = true;
+        setPlayer((String) serverInObject.readObject());
 
-        setPlayer(serverIn.readLine());
-
-        /*if (startMode && player1or2.equals("1")) {
-            client.startMenu();
-        } else if (startMode && player1or2.equals("2")) {
-            client.startMenu();
-        }*/
         while (true) {
 
             /*System.out.println(startMode + " " + firstRound);*/
@@ -67,52 +57,73 @@ public class QuizkampenClient extends JFrame {
                         || (player1or2.equals("2") && gameScore3.getPlayer2Score()[gameScore3.getPlayer2Score().length - 2][0] != null)) {
                     lastPlayerRound = true;
                 }
+            } catch (WriteAbortedException e) {
+                e.getStackTrace();
+                gameDisconnected();
+                break;
             }
         }
-
     }
 
     private void handleFirstRoundPlayer1(Interface client) throws IOException, ClassNotFoundException, InterruptedException {
-        loadScoreBoard(client);
+        GameScore gameScore1 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore1.getPlayer1Score(), gameScore1.getPlayer2Score(), gameScore1.getStatus(), player1or2);
+        //Loads GUI with categories from server, sends back the answer
         out.println(client.loadChooseCategory((ArrayList<String>) serverInObject.readObject()));
+        //Loads GUI with questions from server, sends back results
         out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-        loadScoreBoard(client);
-        loadScoreBoard(client);
+        //Receives score from server, loads GUI with scoreboard, sets firstRound as false
+        GameScore gameScore2 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore2.getPlayer1Score(), gameScore2.getPlayer2Score(), gameScore2.getStatus(), player1or2);
+        GameScore gameScore0 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore0.getPlayer1Score(), gameScore0.getPlayer2Score(), gameScore0.getStatus(), player1or2);
     }
 
     private void handleFirstRoundPlayer2(Interface client) throws IOException, ClassNotFoundException, InterruptedException {
         out1.writeObject("");
-        loadScoreBoard(client);
+        GameScore gameScore = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score(), gameScore.getStatus(), player1or2);
     }
 
     private void handleLastPlayerRound(Interface client) throws IOException, ClassNotFoundException, InterruptedException {
-        loadScoreBoard(client);
+        //Player answers the questions the opponent just answered
+        GameScore gameScore1 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore1.getPlayer1Score(), gameScore1.getPlayer2Score(), gameScore1.getStatus(), player1or2);
         out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-        loadScoreBoard(client);
+        //Loads scoreboard
+        GameScore gameScore2 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore2.getPlayer1Score(), gameScore2.getPlayer2Score(), gameScore2.getStatus(), player1or2);
     }
 
     private void handleLastRoundOpponent(Interface client) throws InterruptedException, IOException, ClassNotFoundException {
-        loadScoreBoard(client);
+        //Only loads scoreboard
+        GameScore gameScore = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score(), gameScore.getStatus(), player1or2);
     }
 
     private GameScore handleRegularRound(Interface client) throws InterruptedException, IOException, ClassNotFoundException {
-        loadScoreBoard(client);
+
+        GameScore gameScore1 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore1.getPlayer1Score(), gameScore1.getPlayer2Score(), gameScore1.getStatus(), player1or2);
+
+        //Answer the questions the opponent just answered
         out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-        loadScoreBoard(client);
+
+        GameScore gameScore2 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore2.getPlayer1Score(), gameScore2.getPlayer2Score(), gameScore2.getStatus(), player1or2);
+        //Choose category
         out.println(client.loadChooseCategory((ArrayList<String>) serverInObject.readObject()));
+        //Answer the questions from the category
         out1.writeObject(client.loadQuestionRound((ArrayList<QuestionObject>) serverInObject.readObject()));
-        GameScore gameScore3 = loadScoreBoard(client);
-        loadScoreBoard(client);
+        //Load scoreboard
+        GameScore gameScore3 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore3.getPlayer1Score(), gameScore3.getPlayer2Score(), gameScore3.getStatus(), player1or2);
+        GameScore gameScore0 = (GameScore) serverInObject.readObject();
+        client.loadScoreboard(gameScore0.getPlayer1Score(), gameScore0.getPlayer2Score(), gameScore0.getStatus(), player1or2);
         return gameScore3;
     }
 
-    public GameScore loadScoreBoard(Interface client) throws InterruptedException, IOException, ClassNotFoundException {
-        GameScore gameScore = (GameScore) serverInObject.readObject();
-        client.loadScoreboard(gameScore.getPlayer1Score(), gameScore.getPlayer2Score(), gameScore.getStatus(), player1or2);
-        return gameScore;
-    }
-
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         QuizkampenClient qc = new QuizkampenClient();
         qc.play();
     }
@@ -121,4 +132,7 @@ public class QuizkampenClient extends JFrame {
         player1or2 = number;
     }
 
+    public void gameDisconnected() {
+        JOptionPane.showMessageDialog(null, "Motspelaren har avslutat spelet, spelet avbrutet");
+    }
 }

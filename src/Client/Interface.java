@@ -7,18 +7,70 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class Interface extends JFrame {
 
     JFrame jframe = new JFrame();
 
-    Interface() {
-        jframe.setSize(350, 300);
+    private ObjectInputStream serverInObject;
+
+
+    Interface() throws InterruptedException {
+        JPanel basePanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        JPanel emptyPanel = new JPanel();
+        JPanel emptyPanel2 = new JPanel();
+        JLabel titelText = new JLabel("Välkommen till Quizkampen!");
+        JTextArea messageWindow = new JTextArea();
+        JButton startButton = new JButton("Starta spel");
+
+        jframe.add(basePanel);
+        emptyPanel.setBackground(Color.blue);
+        emptyPanel2.setBackground(Color.blue);
+        buttonPanel.setBackground(Color.blue);
+        basePanel.setBackground(Color.blue);
+        jframe.add(emptyPanel, BorderLayout.WEST);
+        jframe.add(emptyPanel2, BorderLayout.EAST);
+        basePanel.add(messageWindow, BorderLayout.CENTER);
+        basePanel.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
+        titelText.setBorder(BorderFactory.createEmptyBorder( 0, 20, 30, 20));
+        basePanel.add(titelText, BorderLayout.NORTH);
+        titelText.setHorizontalAlignment(SwingConstants.CENTER);
+        titelText.setForeground(Color.WHITE);
+        titelText.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
+        jframe.add(buttonPanel, BorderLayout.SOUTH);
+        buttonPanel.add(startButton);
+        startButton.setSize(10, 10);
+
+        final boolean[] loop = {true};
+
+        startButton.addActionListener(e -> {
+            if(e.getSource() == startButton){
+                try {
+                    loop[0] = false;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        jframe.setSize(350,300);
         jframe.setVisible(true);
-        jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
         jframe.setLocationRelativeTo(null);
+        jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        while(loop[0]) {
+            Thread.sleep(10);
+        }
+
+        buttonPanel.remove(startButton);
+        messageWindow.setText("Väntar på motståndare");
     }
+
+
 
     public String loadChooseCategory(ArrayList<String> categoriesInput) {
         jframe.getContentPane().removeAll();
@@ -121,7 +173,7 @@ public class Interface extends JFrame {
                 Thread.sleep(10);
             }
             results[i] = answerTemp[0].equals("<html>" + questionRound.get(i).getRightOption() + "</html>");
-            Thread.sleep(1000);
+            Thread.sleep(500);
         }
         return results;
     }
@@ -172,6 +224,7 @@ public class Interface extends JFrame {
 
         final boolean[] loop = {false};
         if(stageString.equals("Din tur att spela")){
+            JPanel jpButtons = new JPanel(new GridLayout(1,2));
             JButton playButton = new JButton("Spela");
             playButton.setFocusPainted(false);
             loop[0] = true;
@@ -181,7 +234,19 @@ public class Interface extends JFrame {
                     loop[0] = false;
                 }
             });
-            basePanel.add(playButton, BorderLayout.SOUTH);
+            JButton giveUp = new JButton("Ge upp");
+            giveUp.setFocusPainted(false);
+            loop[0] = true;
+            giveUp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    JOptionPane.showMessageDialog(null, "Är du säker?");
+                    jframe.dispatchEvent(new WindowEvent(jframe, WindowEvent.WINDOW_CLOSING));
+                }
+            });
+            basePanel.add(jpButtons, BorderLayout.SOUTH);
+            jpButtons.add(playButton);
+            jpButtons.add(giveUp);
         }
         jframe.setVisible(true);
         jframe.revalidate();

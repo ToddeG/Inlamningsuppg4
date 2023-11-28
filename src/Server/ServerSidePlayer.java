@@ -2,6 +2,7 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 
 
 class ServerSidePlayer extends Thread {
@@ -22,7 +23,7 @@ class ServerSidePlayer extends Thread {
             outputObject = new ObjectOutputStream(socket.getOutputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
-            System.out.println("Player died: " + e);
+            System.out.println("Avbrutet.");
         }
     }
 
@@ -34,14 +35,16 @@ class ServerSidePlayer extends Thread {
         this.opponent = opponent;
     }
 
-    public void sendString(String message){
-        output.println(message);
-    }
-
-    public void sendObject(Object object) throws IOException {
-        outputObject.flush();
-        outputObject.writeObject(object);
-        outputObject.reset();
+    public void sendObject(Object object) {
+        try {
+            outputObject.flush();
+            outputObject.writeObject(object);
+            outputObject.reset();
+        } catch (IOException e) {
+            e.getStackTrace();
+            Disconnected d = new Disconnected();
+            opponent.sendObject(d);
+        }
     }
 
     public String recieveString() {
@@ -53,8 +56,16 @@ class ServerSidePlayer extends Thread {
         }
     }
 
-    public Object recieveObject() throws IOException, ClassNotFoundException {
-        return inputObject.readObject();
+    public Object recieveObject() {
+        try {
+            return inputObject.readObject();
+        } catch (IOException e) {
+            Disconnected d = new Disconnected();
+            opponent.sendObject(d);
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addRound(){
@@ -84,4 +95,10 @@ class ServerSidePlayer extends Thread {
 
     }
 
+    public void endGame() {
+
+    }
+}
+
+class Disconnected {
 }

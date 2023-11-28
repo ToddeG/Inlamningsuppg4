@@ -4,7 +4,6 @@ import POJOs.QuestionObject;
 import POJOs.GameScore;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class QuizkampenClient extends JFrame {
         serverInObject = new ObjectInputStream(s.getInputStream());
     }
 
-    public void play() throws IOException, ClassNotFoundException, InterruptedException, BadLocationException {
+    public void play() throws IOException, ClassNotFoundException, InterruptedException{
         Interface client = new Interface();
         boolean firstRound = true;
         boolean lastPlayerRound = false;
@@ -113,7 +112,7 @@ public class QuizkampenClient extends JFrame {
         return gameScore;
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException, BadLocationException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
         QuizkampenClient qc = new QuizkampenClient();
         qc.play();
     }

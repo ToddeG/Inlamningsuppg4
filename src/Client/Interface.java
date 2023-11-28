@@ -8,16 +8,22 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 public class Interface extends JFrame {
 
     JFrame jframe = new JFrame();
+
+    int seconds = 10;
+    Timer timer;
+
 
     Interface() {
         jframe.setSize(350, 300);
         jframe.setVisible(true);
         jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
         jframe.setLocationRelativeTo(null);
+        jframe.setResizable(false);
     }
 
     public String loadChooseCategory(ArrayList<String> categoriesInput) {
@@ -56,7 +62,13 @@ public class Interface extends JFrame {
     }
 
     public Boolean[] loadQuestionRound(ArrayList<QuestionObject> questionRound) throws InterruptedException {
+
+
         jframe.getContentPane().removeAll();
+        JLabel timeLeft = new JLabel();
+        /*countdownTimer(timeLeft);*/
+
+
         JPanel basePanel = new JPanel(new BorderLayout());
         JPanel categoryPanel = new JPanel(new GridLayout(2, 1));
         JPanel questionPanel = new JPanel();
@@ -66,6 +78,14 @@ public class Interface extends JFrame {
         JLabel question;
         JButton[] options = new JButton[4];
 
+        timeLeft.setBounds(280,10,40,40);
+        timeLeft.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
+        timeLeft.setBorder(BorderFactory.createBevelBorder(1));
+        timeLeft.setOpaque(true);
+        timeLeft.setHorizontalAlignment(JTextField.CENTER);
+        timeLeft.setText(String.valueOf(seconds));
+
+        basePanel.add(timeLeft);
         jframe.add(basePanel);
         basePanel.add(categoryPanel, BorderLayout.NORTH);
         basePanel.add(questionPanel, BorderLayout.CENTER);
@@ -78,7 +98,13 @@ public class Interface extends JFrame {
         Boolean[] results = new Boolean[questionRound.size()];
         for (int i = 0; i < questionRound.size(); i++) {
 
+
+            String temp;
+
             final String[] answerTemp = new String[1];
+
+            temp = countdownTimer(timeLeft);
+
             categoryPanel.removeAll();
             questionPanel.removeAll();
             answerPanel.removeAll();
@@ -117,14 +143,21 @@ public class Interface extends JFrame {
             }
             basePanel.revalidate();
             basePanel.repaint();
+
             while (answerTemp[0] == null) {
                 Thread.sleep(10);
+                System.out.println(temp);
+
             }
             results[i] = answerTemp[0].equals("<html>" + questionRound.get(i).getRightOption() + "</html>");
             Thread.sleep(1000);
         }
+
         return results;
+
     }
+
+
 
     public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString, String player1or2) throws InterruptedException {
         jframe.getContentPane().removeAll();
@@ -259,6 +292,7 @@ public class Interface extends JFrame {
                 System.out.println("Knapp tryckt");
                 QuizkampenClient.firstRound = true;
                 System.out.println(QuizkampenClient.startMode + " " + QuizkampenClient.firstRound);
+
             }
         });*/
         jframe.setVisible(true);
@@ -267,8 +301,44 @@ public class Interface extends JFrame {
 
     }
 
+
+    public String countdownTimer(JLabel timeLeft) {
+        seconds = 10;
+        String[] temp = new String[1];
+
+
+        timer = new Timer(1000, e -> {
+
+            seconds--;
+            if (seconds < 0) {
+                countdownStop();
+                temp[0] = ".";
+
+            } else {
+                timeLeft.setText(String.valueOf(seconds));
+            }
+
+        });
+
+        if (!timer.isRunning()) {
+            timer.start();
+        }
+
+        return temp[0];
+
+
+    }
+
+    public void countdownStop() {
+        timer.stop();
+
+    }
+
+
+
     public static void main(String[] args) {
         Interface i = new Interface();
         i.startMenu();
+
     }
 }

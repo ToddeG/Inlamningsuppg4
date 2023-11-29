@@ -8,7 +8,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 
 
 public class Interface extends JFrame {
@@ -26,6 +29,7 @@ public class Interface extends JFrame {
         JLabel titelText = new JLabel("Välkommen till Quizkampen!");
         JTextArea messageWindow = new JTextArea();
         JButton startButton = new JButton("Starta spel");
+        JButton propertiesButton = new JButton("Inställningar");
 
         jframe.add(basePanel);
         emptyPanel.setBackground(Color.blue);
@@ -43,6 +47,7 @@ public class Interface extends JFrame {
         titelText.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
         jframe.add(buttonPanel, BorderLayout.SOUTH);
         buttonPanel.add(startButton);
+        buttonPanel.add(propertiesButton);
         startButton.setSize(10, 10);
         jframe.setResizable(false);
 
@@ -51,6 +56,14 @@ public class Interface extends JFrame {
         startButton.addActionListener(e -> {
             if(e.getSource() == startButton){
                     loop[0] = false;
+            }
+        });
+
+        propertiesButton.addActionListener(e -> {
+            if(e.getSource() == propertiesButton){
+                //setProperties();
+                settings(propertiesButton);
+
             }
         });
 
@@ -346,6 +359,62 @@ public class Interface extends JFrame {
     }
     public void countdownStop() {
         timer.stop();
+    }
+
+    public void setProperties(){
+
+        Properties p = new Properties();
+
+        try {
+            p.load(new FileInputStream("src/Server/GameSettings.properties"));
+            p.setProperty("rounds", "2");
+            p.setProperty("questionsPerRound", "2");
+
+            p.store(new FileOutputStream("src/Server/GameSettings.properties"), null);
+        } catch (Exception e) {
+            System.out.println("File not found");
+        }
+    }
+
+    public void settings(JButton propertiesButton){
+
+        propertiesButton.setEnabled(false);
+
+        JFrame jfSettings = new JFrame();
+        JPanel basePanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        JButton okButton = new JButton("Ok");
+        JButton abortButton = new JButton("Avbryt");
+
+        jfSettings.add(basePanel);
+        jfSettings.add(buttonPanel);
+        buttonPanel.add(okButton);
+        buttonPanel.add(abortButton);
+
+
+        okButton.addActionListener(e -> {
+            if(e.getSource() == okButton){
+                //setProperties();
+                settings(propertiesButton);
+
+            }
+        });
+
+        abortButton.addActionListener(e -> {
+            if(e.getSource() == abortButton){
+                jfSettings.dispatchEvent(new WindowEvent(jfSettings, WindowEvent.WINDOW_CLOSING));
+                propertiesButton.setEnabled(true);
+            }
+        });
+
+
+
+        jfSettings.setResizable(false);
+        jfSettings.setVisible(true);
+        jfSettings.setSize(350,300);
+        jfSettings.setDefaultCloseOperation(HIDE_ON_CLOSE);
+
+
 
 
     }

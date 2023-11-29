@@ -5,6 +5,7 @@ import DatabaseQuestion.ReadFromFile;
 import POJOs.GameScore;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
@@ -25,6 +26,7 @@ public class ServerSideGame extends Thread {
     }
 
     public void run() {
+        System.out.println("Run är igång");
         //Calling method LoadProperties to set nr. of Rounds and Questions per game.
         int[] properties = LoadProperties();
         int rounds = properties[0];
@@ -36,6 +38,8 @@ public class ServerSideGame extends Thread {
 
         player1.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
         player2.setNumberOfRoundsAndQuestions(rounds, questionsPerRound);
+
+        resetProperties();
 
         ArrayList<QuestionObject> currentQuestions = null;
 
@@ -157,5 +161,18 @@ public class ServerSideGame extends Thread {
 
     }
 
+    public void resetProperties() {
+        Properties p = new Properties();
+
+        try {
+            p.load(new FileInputStream("src/Server/GameSettings.properties"));
+            p.setProperty("rounds", "4");
+            p.setProperty("questionsPerRound", "3");
+
+            p.store(new FileOutputStream("src/Server/GameSettings.properties"), null);
+        } catch (Exception e) {
+            System.out.println("File not found");
+        }
+    }
 
 }

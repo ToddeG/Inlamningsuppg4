@@ -1,12 +1,8 @@
 package Client;
 
 import POJOs.QuestionObject;
-import Server.ServerSideGame;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

@@ -4,6 +4,7 @@ import POJOs.QuestionObject;
 import POJOs.GameScore;
 
 import javax.swing.*;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class QuizkampenClient extends JFrame {
             } catch (WriteAbortedException e) {
                 e.getStackTrace();
                 gameDisconnected();
+                client.jframe.dispatchEvent(new WindowEvent(client.jframe, WindowEvent.WINDOW_CLOSING));
                 break;
             }
         }
@@ -112,5 +114,6 @@ public class QuizkampenClient extends JFrame {
 
     public void gameDisconnected() {
         JOptionPane.showMessageDialog(null, "Motspelaren har avslutat spelet, spelet avbrutet");
+
     }
 }

@@ -14,9 +14,7 @@ public class Interface extends JFrame {
 
     JFrame jframe = new JFrame();
 
-    int seconds = 5;
     Timer timer;
-
     JProgressBar timerBar = new JProgressBar();
 
 
@@ -67,8 +65,6 @@ public class Interface extends JFrame {
 
 
         jframe.getContentPane().removeAll();
-        JLabel timeLeft = new JLabel();
-
 
         JPanel basePanel = new JPanel(new BorderLayout());
         JPanel categoryPanel = new JPanel(new GridLayout(2, 1));
@@ -86,19 +82,6 @@ public class Interface extends JFrame {
         timerBar.setFont(new Font("MV Boli", Font.BOLD, 15));
         basePanel.add(timerBar);
 
-
-        /*timeLeft.setBounds(280,10,40,40);
-        timeLeft.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
-        timeLeft.setBorder(BorderFactory.createBevelBorder(1));
-        timeLeft.setOpaque(true);
-        timeLeft.setHorizontalAlignment(JTextField.CENTER);
-        timeLeft.setText(String.valueOf(seconds));
-        timeLeft.setForeground(Color.WHITE);
-        timeLeft.setBackground(Color.RED);*/
-
-
-
-        //basePanel.add(timeLeft);
         jframe.add(basePanel);
         basePanel.add(categoryPanel, BorderLayout.NORTH);
         basePanel.add(questionPanel, BorderLayout.CENTER);
@@ -110,10 +93,12 @@ public class Interface extends JFrame {
         jframe.repaint();
 
         Boolean[] results = new Boolean[questionRound.size()];
+
         for (int i = 0; i < questionRound.size(); i++) {
 
             final String[] answerTemp = new String[1];
-            //countdownTimer(timeLeft);
+            startProgressbar(timerBar);
+
             categoryPanel.removeAll();
             questionPanel.removeAll();
             answerPanel.removeAll();
@@ -127,7 +112,9 @@ public class Interface extends JFrame {
             question.setPreferredSize(new Dimension(300, 100));
             question.setText("<html>" + questionRound.get(i).getQuestion() + "</html>");
             question.setHorizontalAlignment(SwingConstants.CENTER);
+
             questionPanel.add(question);
+
             for (int j = 0; j < options.length; j++) {
                 options[j] = new JButton("<html>" + questionRound.get(i).getOptionList()[j] + "</html>");
                 options[j].setFocusPainted(false);
@@ -140,18 +127,21 @@ public class Interface extends JFrame {
                             answerTemp[0] = options[finalJ].getText();
                             if(answerTemp[0].equals("<html>" + questionRound.get(finalI).getRightOption() + "</html>")){
                                 options[finalJ].setBackground(Color.GREEN);
-                                //countdownStop();
+                                countdownStop();
                             }
                             else{
                                 options[finalJ].setBackground(Color.RED);
-                                //countdownStop();
+                                countdownStop();
                             }
                         }
                     }
                 });
                 options[j].setPreferredSize(new Dimension(70, 70));
                 answerPanel.add(options[j]);
+
+
             }
+
 
             basePanel.revalidate();
             basePanel.repaint();
@@ -160,14 +150,15 @@ public class Interface extends JFrame {
                 Thread.sleep(10);
                 if(timerBar.getValue() == 100){
                     answerTemp[0] = questionRound.get(i).getRightOption()+".";
-                    Thread.sleep(1000);
                 }
-
-
             }
+            countdownStop();
 
             results[i] = answerTemp[0].equals("<html>" + questionRound.get(i).getRightOption() + "</html>");
             Thread.sleep(1000);
+            timerBar.setValue(0);
+            timerBar.setBackground(Color.WHITE);
+            timerBar.setForeground(Color.BLUE);
         }
 
         return results;
@@ -317,47 +308,34 @@ public class Interface extends JFrame {
 
     }
 
+    public void startProgressbar(JProgressBar timerBar){
+        final int[] counter = {0};
 
-    public void countdownTimer(JLabel timeLeft) {
+        timer = new Timer(70, e -> {
 
-        timer = new Timer(1000, e -> {
-            seconds--;
-            if (seconds < 0) {
+            if (counter[0] >= 100) {
+                timerBar.setValue(counter[0]);
+                timerBar.setForeground(Color.RED);
                 countdownStop();
-                timeLeft.setForeground(Color.RED);
-                timeLeft.setBackground(Color.RED);
-            } else {
 
-                timeLeft.setText(String.valueOf(seconds));
+
+            } else {
+                timerBar.setValue(counter[0]);
+                counter[0] +=1;
 
             }
         });
         if (!timer.isRunning()) {
             timer.start();
-            timeLeft.setForeground(Color.BLACK);
-            timeLeft.setBackground(Color.WHITE);
+
         }
 
-    }
 
+
+    }
     public void countdownStop() {
         timer.stop();
-        seconds = 6;
 
-    }
-
-    public void fill() throws InterruptedException {
-        int counter = 0;
-
-        while(counter >= 0){
-
-            timerBar.setValue(counter);
-            Thread.sleep(70);
-            counter += 1;
-            if(counter == 100){
-                timerBar.setForeground(Color.RED);
-            }
-        }
 
     }
 

@@ -318,51 +318,6 @@ public class Interface extends JFrame {
         }
         return score;
     }
-    public void startMenu(){
-
-        jframe.getContentPane().removeAll();
-
-        JPanel basePanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel();
-        JPanel emptyPanel = new JPanel();
-        JPanel emptyPanel2 = new JPanel();
-        JLabel titelText = new JLabel("Välkommen till Quizkampen!");
-        JTextArea messageWindow = new JTextArea();
-        JButton startButton = new JButton("Starta spel");
-
-        jframe.add(basePanel);
-        emptyPanel.setBackground(Color.blue);
-        emptyPanel2.setBackground(Color.blue);
-        buttonPanel.setBackground(Color.blue);
-        basePanel.setBackground(Color.blue);
-        jframe.add(emptyPanel, BorderLayout.WEST);
-        jframe.add(emptyPanel2, BorderLayout.EAST);
-        basePanel.add(messageWindow, BorderLayout.CENTER);
-        messageWindow.setText("Väntar på motståndare");
-        basePanel.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
-        titelText.setBorder(BorderFactory.createEmptyBorder( 0, 20, 30, 20));
-        basePanel.add(titelText, BorderLayout.NORTH);
-        titelText.setHorizontalAlignment(SwingConstants.CENTER);
-        titelText.setForeground(Color.WHITE);
-        titelText.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
-        jframe.add(buttonPanel, BorderLayout.SOUTH);
-        buttonPanel.add(startButton);
-        startButton.setSize(10, 10);
-
-        /*startButton.addActionListener(e -> {
-            if(e.getSource() == startButton){
-                QuizkampenClient.startMode = false;
-                System.out.println("Knapp tryckt");
-                QuizkampenClient.firstRound = true;
-                System.out.println(QuizkampenClient.startMode + " " + QuizkampenClient.firstRound);
-
-            }
-        });*/
-        jframe.setVisible(true);
-        jframe.revalidate();
-        jframe.repaint();
-
-    }
 
     public void startProgressbar(JProgressBar timerBar){
         final int[] counter = {0};
@@ -392,13 +347,6 @@ public class Interface extends JFrame {
     public void countdownStop() {
         timer.stop();
 
-
-    }
-
-
-    public static void main(String[] args) throws InterruptedException {
-        Interface i = new Interface();
-        i.startMenu();
 
     }
 }

@@ -14,7 +14,7 @@ public class Interface extends JFrame {
 
     JFrame jframe = new JFrame();
 
-    int seconds = 10;
+    int seconds = 5;
     Timer timer;
 
 
@@ -66,7 +66,6 @@ public class Interface extends JFrame {
 
         jframe.getContentPane().removeAll();
         JLabel timeLeft = new JLabel();
-        /*countdownTimer(timeLeft);*/
 
 
         JPanel basePanel = new JPanel(new BorderLayout());
@@ -84,12 +83,15 @@ public class Interface extends JFrame {
         timeLeft.setOpaque(true);
         timeLeft.setHorizontalAlignment(JTextField.CENTER);
         timeLeft.setText(String.valueOf(seconds));
+        timeLeft.setForeground(Color.BLACK);
+        timeLeft.setBackground(Color.WHITE);
 
         basePanel.add(timeLeft);
         jframe.add(basePanel);
         basePanel.add(categoryPanel, BorderLayout.NORTH);
         basePanel.add(questionPanel, BorderLayout.CENTER);
         basePanel.add(answerPanel, BorderLayout.SOUTH);
+
 
         jframe.setVisible(true);
         jframe.revalidate();
@@ -98,13 +100,8 @@ public class Interface extends JFrame {
         Boolean[] results = new Boolean[questionRound.size()];
         for (int i = 0; i < questionRound.size(); i++) {
 
-
-            String temp;
-
             final String[] answerTemp = new String[1];
-
-            temp = countdownTimer(timeLeft);
-
+            countdownTimer(timeLeft);
             categoryPanel.removeAll();
             questionPanel.removeAll();
             answerPanel.removeAll();
@@ -131,9 +128,11 @@ public class Interface extends JFrame {
                             answerTemp[0] = options[finalJ].getText();
                             if(answerTemp[0].equals("<html>" + questionRound.get(finalI).getRightOption() + "</html>")){
                                 options[finalJ].setBackground(Color.GREEN);
+                                countdownStop();
                             }
                             else{
                                 options[finalJ].setBackground(Color.RED);
+                                countdownStop();
                             }
                         }
                     }
@@ -146,15 +145,19 @@ public class Interface extends JFrame {
 
             while (answerTemp[0] == null) {
                 Thread.sleep(10);
-                System.out.println(temp);
+                if(seconds <= 0){
+                    answerTemp[0] = questionRound.get(i).getRightOption()+".";
+                    Thread.sleep(1000);
+                }
+
 
             }
+
             results[i] = answerTemp[0].equals("<html>" + questionRound.get(i).getRightOption() + "</html>");
             Thread.sleep(1000);
         }
 
         return results;
-
     }
 
 
@@ -302,35 +305,31 @@ public class Interface extends JFrame {
     }
 
 
-    public String countdownTimer(JLabel timeLeft) {
-        seconds = 10;
-        String[] temp = new String[1];
-
+    public void countdownTimer(JLabel timeLeft) {
 
         timer = new Timer(1000, e -> {
-
             seconds--;
             if (seconds < 0) {
                 countdownStop();
-                temp[0] = ".";
-
+                timeLeft.setForeground(Color.RED);
+                timeLeft.setBackground(Color.RED);
             } else {
+
                 timeLeft.setText(String.valueOf(seconds));
+
             }
-
         });
-
         if (!timer.isRunning()) {
             timer.start();
+            timeLeft.setForeground(Color.BLACK);
+            timeLeft.setBackground(Color.WHITE);
         }
-
-        return temp[0];
-
 
     }
 
     public void countdownStop() {
         timer.stop();
+        seconds = 6;
 
     }
 

@@ -29,7 +29,7 @@ public class Interface extends JFrame {
         JLabel titelText = new JLabel("Välkommen till Quizkampen!");
         JTextArea messageWindow = new JTextArea();
         JButton startButton = new JButton("Starta spel");
-        JButton propertiesButton = new JButton("\u2699");
+        JButton propertiesButton = new JButton("⚙");
 
         jframe.add(basePanel);
         emptyPanel.setBackground(Color.blue);

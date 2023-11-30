@@ -35,9 +35,12 @@ class ServerSidePlayer extends Thread {
             outputObject.writeObject(object);
             outputObject.reset();
         } catch (IOException e) {
-            e.getStackTrace();
+            System.out.println("sendObject111 Spelet avslutat av motståndare.");
             Disconnected d = new Disconnected();
-            opponent.sendObject(d);
+            int temp = 1;
+            for (int i = 0; i <= temp; i++) {
+                opponent.sendObject(d);
+            }
         }
     }
 
@@ -45,10 +48,15 @@ class ServerSidePlayer extends Thread {
         try {
             return inputObject.readObject();
         } catch (IOException e) {
+            System.out.println("recieveObject111 Spelet avslutat av motståndare.");
             Disconnected d = new Disconnected();
-            opponent.sendObject(d);
+            int temp = 1;
+            for (int i = 0; i <= temp; i++) {
+                opponent.sendObject(d);
+            }
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
+            System.out.println("recieveObject222 Spelet avslutat av motståndare.");
             throw new RuntimeException(e);
         }
     }

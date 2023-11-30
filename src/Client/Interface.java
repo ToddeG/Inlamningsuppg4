@@ -143,16 +143,19 @@ public class Interface extends JFrame {
             giveUp.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    int playerChoice = JOptionPane.showConfirmDialog(null, "Är du säker?", "Retry", JOptionPane.YES_NO_OPTION);
-                    if(playerChoice == JOptionPane.YES_OPTION) {
-                        System.exit(0);
-                    } else {
-                        try {
-                            remove(playerChoice);
-                        } catch (ArrayIndexOutOfBoundsException ignored) {
-                        }
-                    }
+                    JOptionPane.showMessageDialog(null, "Är du säker?");
+                    jframe.dispatchEvent(new WindowEvent(jframe, WindowEvent.WINDOW_CLOSING));
                 }
+//                    int playerChoice = JOptionPane.showConfirmDialog(null, "Är du säker?", "Retry", JOptionPane.YES_NO_OPTION);
+//                    if(playerChoice == JOptionPane.YES_OPTION) {
+//                        System.exit(0);
+//                    } else {
+//                        try {
+//                            remove(playerChoice);
+//                        } catch (ArrayIndexOutOfBoundsException ignored) {
+//                        }
+//                    }
+//                }
             });
             basePanel.add(jpButtons, BorderLayout.SOUTH);
             jpButtons.add(playButton);

@@ -18,7 +18,7 @@ public class QuizkampenServer {
                 game.start();
                 // listener.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("Clients couldn't connect.");
             }
         }
     }

@@ -151,7 +151,7 @@ public class ServerSideGame extends Thread {
         try {
             p.load(new FileInputStream("src/Server/GameSettings.properties"));
         } catch (Exception e) {
-            System.out.println("File not found");
+            System.out.println("Properties not found");
         }
 
         int rounds = Integer.parseInt(p.getProperty("rounds", "2"));
@@ -171,7 +171,7 @@ public class ServerSideGame extends Thread {
 
             p.store(new FileOutputStream("src/Server/GameSettings.properties"), null);
         } catch (Exception e) {
-            System.out.println("File not found");
+            System.out.println("Properties not found");
         }
     }
 

@@ -372,7 +372,7 @@ public class Interface extends JFrame {
 
             p.store(new FileOutputStream("src/Server/GameSettings.properties"), null);
         } catch (Exception e) {
-            System.out.println("File not found");
+            System.out.println("Properties not found");
         }
     }
 

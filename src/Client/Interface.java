@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -80,7 +81,122 @@ public class Interface extends JFrame {
         messageWindow.setText("Väntar på motståndare");
     }
 
+    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString, String player1or2) throws InterruptedException {
+        jframe.getContentPane().removeAll();
+        JPanel basePanel = new JPanel(new BorderLayout());
+        jframe.add(basePanel);
+        JPanel headerPanel = new JPanel(new GridLayout(2, 1));
+        basePanel.add(headerPanel, BorderLayout.NORTH);
+        JLabel stage = new JLabel(stageString);
+        stage.setHorizontalAlignment(SwingConstants.CENTER);
+        stage.setBorder(new EmptyBorder(5,0,10,0));
+        headerPanel.add(stage);
 
+        JPanel playerPanel = new JPanel(new GridLayout(1, 3));
+        headerPanel.add(playerPanel);
+        String player1 = "Spelare 1";
+        String player2 = "Spelare 2";
+        if (player1or2.equals("1")){
+            player1 = player1 + " (Du)";
+        }
+        else if (player1or2.equals("2")){
+            player2 = player2 + " (Du)";
+        }
+        JLabel player1Header = new JLabel(player1);
+        player1Header.setHorizontalAlignment(SwingConstants.CENTER);
+        playerPanel.add(player1Header);
+        JLabel scoreHeader = new JLabel(countScore(player1Score) + " - " + countScore(player2Score));
+        scoreHeader.setHorizontalAlignment(SwingConstants.CENTER);
+        playerPanel.add(scoreHeader);
+        JLabel player2Header = new JLabel(player2);
+        player2Header.setHorizontalAlignment(SwingConstants.CENTER);
+        playerPanel.add(player2Header);
+
+        JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));
+        for (int i = 0; i < player1Score.length; i++) {
+            loadScoreboardButtons(scorePanel, player1Score, i);
+            JLabel round = new JLabel(String.valueOf(i + 1));
+            round.setPreferredSize(new Dimension(5, 5));
+            round.setHorizontalAlignment(SwingConstants.CENTER);
+            scorePanel.add(round);
+            loadScoreboardButtons(scorePanel, player2Score, i);
+        }
+        basePanel.revalidate();
+        basePanel.repaint();
+        basePanel.add(scorePanel, BorderLayout.CENTER);
+
+        final boolean[] loop = {false};
+        if(stageString.equals("Din tur att spela")){
+            JPanel jpButtons = new JPanel(new GridLayout(1,2));
+            JButton playButton = new JButton("Spela");
+            playButton.setFocusPainted(false);
+            loop[0] = true;
+            playButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    loop[0] = false;
+                }
+            });
+            JButton giveUp = new JButton("Ge upp");
+            giveUp.setFocusPainted(false);
+            loop[0] = true;
+            giveUp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int playerChoice = JOptionPane.showConfirmDialog(null, "Är du säker?", "Retry", JOptionPane.YES_NO_OPTION);
+                    if(playerChoice == JOptionPane.YES_OPTION) {
+                        System.exit(0);
+                    } else {
+                        try {
+                            remove(playerChoice);
+                        } catch (ArrayIndexOutOfBoundsException ignored) {
+                        }
+                    }
+                }
+            });
+            basePanel.add(jpButtons, BorderLayout.SOUTH);
+            jpButtons.add(playButton);
+            jpButtons.add(giveUp);
+        }
+        jframe.setVisible(true);
+        jframe.revalidate();
+        jframe.repaint();
+        while(loop[0]){
+            Thread.sleep(10);
+        }
+    }
+    public void loadScoreboardButtons(JPanel scorePanel, Boolean[][] playerScore, int i){
+        JPanel player1Round = new JPanel(new GridLayout(1, playerScore[i].length));
+        for (int j = 0; j < playerScore[i].length; j++) {
+            JButton score = new JButton();
+            if (playerScore[i][j] == null) {
+                score.setBackground(Color.gray);
+            } else if (playerScore[i][j]) {
+                score.setBackground(Color.GREEN);
+            } else {
+                score.setBackground(Color.RED);
+            }
+            player1Round.add(score);
+        }
+        scorePanel.add(player1Round);
+    }
+
+    //Counts a players total score
+    public int countScore(Boolean[][] playerScore) {
+        int score = 0;
+        for (Boolean[] booleans : playerScore) {
+            for (Boolean aBoolean : booleans) {
+                try {
+                    if (aBoolean) {
+                        score++;
+                    }
+                } catch (NullPointerException e) {
+                    return score;
+                }
+            }
+        }
+        return score;
+    }
 
     public String loadChooseCategory(ArrayList<String> categoriesInput) {
         jframe.getContentPane().removeAll();
@@ -220,118 +336,6 @@ public class Interface extends JFrame {
         return results;
     }
 
-
-
-    public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString, String player1or2) throws InterruptedException {
-        jframe.getContentPane().removeAll();
-        JPanel basePanel = new JPanel(new BorderLayout());
-        jframe.add(basePanel);
-        JPanel headerPanel = new JPanel(new GridLayout(2, 1));
-        basePanel.add(headerPanel, BorderLayout.NORTH);
-        JLabel stage = new JLabel(stageString);
-        stage.setHorizontalAlignment(SwingConstants.CENTER);
-        stage.setBorder(new EmptyBorder(5,0,10,0));
-        headerPanel.add(stage);
-
-        JPanel playerPanel = new JPanel(new GridLayout(1, 3));
-        headerPanel.add(playerPanel);
-        String player1 = "Spelare 1";
-        String player2 = "Spelare 2";
-        if (player1or2.equals("1")){
-            player1 = player1 + " (Du)";
-        }
-        else if (player1or2.equals("2")){
-            player2 = player2 + " (Du)";
-        }
-        JLabel player1Header = new JLabel(player1);
-        player1Header.setHorizontalAlignment(SwingConstants.CENTER);
-        playerPanel.add(player1Header);
-        JLabel scoreHeader = new JLabel(countScore(player1Score) + " - " + countScore(player2Score));
-        scoreHeader.setHorizontalAlignment(SwingConstants.CENTER);
-        playerPanel.add(scoreHeader);
-        JLabel player2Header = new JLabel(player2);
-        player2Header.setHorizontalAlignment(SwingConstants.CENTER);
-        playerPanel.add(player2Header);
-
-        JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));
-        for (int i = 0; i < player1Score.length; i++) {
-            loadScoreboardButtons(scorePanel, player1Score, i);
-            JLabel round = new JLabel(String.valueOf(i + 1));
-            round.setPreferredSize(new Dimension(5, 5));
-            round.setHorizontalAlignment(SwingConstants.CENTER);
-            scorePanel.add(round);
-            loadScoreboardButtons(scorePanel, player2Score, i);
-        }
-        basePanel.revalidate();
-        basePanel.repaint();
-        basePanel.add(scorePanel, BorderLayout.CENTER);
-
-        final boolean[] loop = {false};
-        if(stageString.equals("Din tur att spela")){
-            JPanel jpButtons = new JPanel(new GridLayout(1,2));
-            JButton playButton = new JButton("Spela");
-            playButton.setFocusPainted(false);
-            loop[0] = true;
-            playButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    loop[0] = false;
-                }
-            });
-            JButton giveUp = new JButton("Ge upp");
-            giveUp.setFocusPainted(false);
-            loop[0] = true;
-            giveUp.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    JOptionPane.showMessageDialog(null, "Är du säker?");
-                    jframe.dispatchEvent(new WindowEvent(jframe, WindowEvent.WINDOW_CLOSING));
-                }
-            });
-            basePanel.add(jpButtons, BorderLayout.SOUTH);
-            jpButtons.add(playButton);
-            jpButtons.add(giveUp);
-        }
-        jframe.setVisible(true);
-        jframe.revalidate();
-        jframe.repaint();
-        while(loop[0]){
-            Thread.sleep(10);
-        }
-    }
-    public void loadScoreboardButtons(JPanel scorePanel, Boolean[][] playerScore, int i){
-        JPanel player1Round = new JPanel(new GridLayout(1, playerScore[i].length));
-        for (int j = 0; j < playerScore[i].length; j++) {
-            JButton score = new JButton();
-            if (playerScore[i][j] == null) {
-                score.setBackground(Color.gray);
-            } else if (playerScore[i][j]) {
-                score.setBackground(Color.GREEN);
-            } else {
-                score.setBackground(Color.RED);
-            }
-            player1Round.add(score);
-        }
-        scorePanel.add(player1Round);
-    }
-
-    //Counts a players total score
-    public int countScore(Boolean[][] playerScore) {
-        int score = 0;
-        for (Boolean[] booleans : playerScore) {
-            for (Boolean aBoolean : booleans) {
-                try {
-                    if (aBoolean) {
-                        score++;
-                    }
-                } catch (NullPointerException e) {
-                    return score;
-                }
-            }
-        }
-        return score;
-    }
-
     public void startProgressbar(JProgressBar timerBar){
         final int[] counter = {0};
 
@@ -387,7 +391,7 @@ public class Interface extends JFrame {
         JLabel roundsLabel = new JLabel();
         JLabel questionsLabel = new JLabel();
 
-        JSlider roundsSlider = new JSlider(2,9,3);
+        JSlider roundsSlider = new JSlider(2,9,4);
         JSlider questionsSlider = new JSlider(1,7,3);
 
         roundsSlider.setPaintTrack(true);

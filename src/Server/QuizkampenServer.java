@@ -4,7 +4,7 @@ import java.net.ServerSocket;
 
 public class QuizkampenServer {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         while (true) {
             try (ServerSocket listener = new ServerSocket(55555)) {
@@ -19,7 +19,6 @@ public class QuizkampenServer {
                 // listener.close();
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
         }
     }

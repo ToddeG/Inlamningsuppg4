@@ -1,24 +1,86 @@
 package Client;
 
 import POJOs.QuestionObject;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Properties;
+
 
 public class Interface extends JFrame {
 
     JFrame jframe = new JFrame();
 
-    Interface() {
-        jframe.setSize(350, 300);
+    Timer timer;
+    JProgressBar timerBar = new JProgressBar();
+
+    Interface() throws InterruptedException {
+        JPanel basePanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel();
+        JPanel emptyPanel = new JPanel();
+        JPanel emptyPanel2 = new JPanel();
+        JLabel titelText = new JLabel("Välkommen till Quizkampen!");
+        JTextArea messageWindow = new JTextArea();
+        JButton startButton = new JButton("Starta spel");
+        JButton propertiesButton = new JButton("⚙");
+
+        jframe.add(basePanel);
+        emptyPanel.setBackground(Color.blue);
+        emptyPanel2.setBackground(Color.blue);
+        buttonPanel.setBackground(Color.blue);
+        basePanel.setBackground(Color.blue);
+        jframe.add(emptyPanel, BorderLayout.WEST);
+        jframe.add(emptyPanel2, BorderLayout.EAST);
+        basePanel.add(messageWindow, BorderLayout.CENTER);
+        basePanel.setBorder(BorderFactory.createEmptyBorder(30, 20, 30, 20));
+        titelText.setBorder(BorderFactory.createEmptyBorder( 0, 20, 30, 20));
+        basePanel.add(titelText, BorderLayout.NORTH);
+        titelText.setHorizontalAlignment(SwingConstants.CENTER);
+        titelText.setForeground(Color.WHITE);
+        titelText.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 17));
+        jframe.add(buttonPanel, BorderLayout.SOUTH);
+        buttonPanel.add(startButton);
+        buttonPanel.add(propertiesButton);
+        startButton.setSize(10, 10);
+        propertiesButton.setSize(10,10);
+
+        final boolean[] loop = {true};
+
+        startButton.addActionListener(e -> {
+            if(e.getSource() == startButton){
+                    loop[0] = false;
+            }
+        });
+
+        propertiesButton.addActionListener(e -> {
+            if(e.getSource() == propertiesButton){
+                settings(propertiesButton);
+            }
+        });
+
+        jframe.setResizable(false);
+        jframe.setSize(350,300);
         jframe.setVisible(true);
-        jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
         jframe.setLocationRelativeTo(null);
+        jframe.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        while(loop[0]) {
+            Thread.sleep(10);
+        }
+
+        buttonPanel.remove(startButton);
+        buttonPanel.remove(propertiesButton);
+        messageWindow.setText("Väntar på motståndare");
     }
+
+
 
     public String loadChooseCategory(ArrayList<String> categoriesInput) {
         jframe.getContentPane().removeAll();
@@ -56,7 +118,10 @@ public class Interface extends JFrame {
     }
 
     public Boolean[] loadQuestionRound(ArrayList<QuestionObject> questionRound) throws InterruptedException {
+
+
         jframe.getContentPane().removeAll();
+
         JPanel basePanel = new JPanel(new BorderLayout());
         JPanel categoryPanel = new JPanel(new GridLayout(2, 1));
         JPanel questionPanel = new JPanel();
@@ -66,19 +131,30 @@ public class Interface extends JFrame {
         JLabel question;
         JButton[] options = new JButton[4];
 
+        timerBar.setValue(0);
+        timerBar.setBounds(75, 35, 200, 20);
+        timerBar.setBackground(Color.WHITE);
+        timerBar.setForeground(Color.BLUE);
+        timerBar.setFont(new Font("MV Boli", Font.BOLD, 15));
+        basePanel.add(timerBar);
+
         jframe.add(basePanel);
         basePanel.add(categoryPanel, BorderLayout.NORTH);
         basePanel.add(questionPanel, BorderLayout.CENTER);
         basePanel.add(answerPanel, BorderLayout.SOUTH);
+
 
         jframe.setVisible(true);
         jframe.revalidate();
         jframe.repaint();
 
         Boolean[] results = new Boolean[questionRound.size()];
+
         for (int i = 0; i < questionRound.size(); i++) {
 
             final String[] answerTemp = new String[1];
+            startProgressbar(timerBar);
+
             categoryPanel.removeAll();
             questionPanel.removeAll();
             answerPanel.removeAll();
@@ -92,7 +168,9 @@ public class Interface extends JFrame {
             question.setPreferredSize(new Dimension(300, 100));
             question.setText("<html>" + questionRound.get(i).getQuestion() + "</html>");
             question.setHorizontalAlignment(SwingConstants.CENTER);
+
             questionPanel.add(question);
+
             for (int j = 0; j < options.length; j++) {
                 options[j] = new JButton("<html>" + questionRound.get(i).getOptionList()[j] + "</html>");
                 options[j].setFocusPainted(false);
@@ -105,26 +183,44 @@ public class Interface extends JFrame {
                             answerTemp[0] = options[finalJ].getText();
                             if(answerTemp[0].equals("<html>" + questionRound.get(finalI).getRightOption() + "</html>")){
                                 options[finalJ].setBackground(Color.GREEN);
+                                countdownStop();
                             }
                             else{
                                 options[finalJ].setBackground(Color.RED);
+                                countdownStop();
                             }
                         }
                     }
                 });
                 options[j].setPreferredSize(new Dimension(70, 70));
                 answerPanel.add(options[j]);
+
+
             }
+
+
             basePanel.revalidate();
             basePanel.repaint();
+
             while (answerTemp[0] == null) {
                 Thread.sleep(10);
+                if(timerBar.getValue() == 100){
+                    answerTemp[0] = questionRound.get(i).getRightOption()+".";
+                }
             }
+            countdownStop();
+
             results[i] = answerTemp[0].equals("<html>" + questionRound.get(i).getRightOption() + "</html>");
-            Thread.sleep(1000);
+            Thread.sleep(500);
+            timerBar.setValue(0);
+            timerBar.setBackground(Color.WHITE);
+            timerBar.setForeground(Color.BLUE);
         }
+
         return results;
     }
+
+
 
     public void loadScoreboard(Boolean[][] player1Score, Boolean[][] player2Score, String stageString, String player1or2) throws InterruptedException {
         jframe.getContentPane().removeAll();
@@ -159,36 +255,12 @@ public class Interface extends JFrame {
 
         JPanel scorePanel = new JPanel(new GridLayout(player1Score.length, 3));
         for (int i = 0; i < player1Score.length; i++) {
-            JPanel player1Round = new JPanel(new GridLayout(1, player1Score[i].length));
-            for (int j = 0; j < player1Score[i].length; j++) {
-                JButton score = new JButton();
-                if (player1Score[i][j] == null) {
-                    score.setBackground(Color.gray);
-                } else if (player1Score[i][j]) {
-                    score.setBackground(Color.GREEN);
-                } else {
-                    score.setBackground(Color.RED);
-                }
-                player1Round.add(score);
-            }
-            scorePanel.add(player1Round);
+            loadScoreboardButtons(scorePanel, player1Score, i);
             JLabel round = new JLabel(String.valueOf(i + 1));
             round.setPreferredSize(new Dimension(5, 5));
             round.setHorizontalAlignment(SwingConstants.CENTER);
             scorePanel.add(round);
-            JPanel player2Round = new JPanel(new GridLayout(1, player2Score[i].length));
-            for (int j = 0; j < player2Score[i].length; j++) {
-                JButton score = new JButton();
-                if (player2Score[i][j] == null) {
-                    score.setBackground(Color.gray);
-                } else if (player2Score[i][j]) {
-                    score.setBackground(Color.GREEN);
-                } else {
-                    score.setBackground(Color.RED);
-                }
-                player2Round.add(score);
-            }
-            scorePanel.add(player2Round);
+            loadScoreboardButtons(scorePanel, player2Score, i);
         }
         basePanel.revalidate();
         basePanel.repaint();
@@ -196,6 +268,7 @@ public class Interface extends JFrame {
 
         final boolean[] loop = {false};
         if(stageString.equals("Din tur att spela")){
+            JPanel jpButtons = new JPanel(new GridLayout(1,2));
             JButton playButton = new JButton("Spela");
             playButton.setFocusPainted(false);
             loop[0] = true;
@@ -205,7 +278,19 @@ public class Interface extends JFrame {
                     loop[0] = false;
                 }
             });
-            basePanel.add(playButton, BorderLayout.SOUTH);
+            JButton giveUp = new JButton("Ge upp");
+            giveUp.setFocusPainted(false);
+            loop[0] = true;
+            giveUp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    JOptionPane.showMessageDialog(null, "Är du säker?");
+                    jframe.dispatchEvent(new WindowEvent(jframe, WindowEvent.WINDOW_CLOSING));
+                }
+            });
+            basePanel.add(jpButtons, BorderLayout.SOUTH);
+            jpButtons.add(playButton);
+            jpButtons.add(giveUp);
         }
         jframe.setVisible(true);
         jframe.revalidate();
@@ -213,6 +298,21 @@ public class Interface extends JFrame {
         while(loop[0]){
             Thread.sleep(10);
         }
+    }
+    public void loadScoreboardButtons(JPanel scorePanel, Boolean[][] playerScore, int i){
+        JPanel player1Round = new JPanel(new GridLayout(1, playerScore[i].length));
+        for (int j = 0; j < playerScore[i].length; j++) {
+            JButton score = new JButton();
+            if (playerScore[i][j] == null) {
+                score.setBackground(Color.gray);
+            } else if (playerScore[i][j]) {
+                score.setBackground(Color.GREEN);
+            } else {
+                score.setBackground(Color.RED);
+            }
+            player1Round.add(score);
+        }
+        scorePanel.add(player1Round);
     }
 
     //Counts a players total score
@@ -230,5 +330,138 @@ public class Interface extends JFrame {
             }
         }
         return score;
+    }
+
+    public void startProgressbar(JProgressBar timerBar){
+        final int[] counter = {0};
+
+        timer = new Timer(70, e -> {
+
+            if (counter[0] >= 100) {
+                timerBar.setValue(counter[0]);
+                timerBar.setForeground(Color.RED);
+                countdownStop();
+            } else {
+                timerBar.setValue(counter[0]);
+                counter[0] +=1;
+            }
+        });
+        if (!timer.isRunning()) {
+            timer.start();
+
+        }
+
+
+
+    }
+    public void countdownStop() {
+        timer.stop();
+    }
+
+    public void setProperties(int roundsValue, int questionsValue ){
+
+       String rounds = String.valueOf(roundsValue);
+       String questions = String.valueOf(questionsValue);
+
+        Properties p = new Properties();
+
+        try {
+            p.load(new FileInputStream("src/Server/GameSettings.properties"));
+            p.setProperty("rounds", rounds);
+            p.setProperty("questionsPerRound", questions);
+
+            p.store(new FileOutputStream("src/Server/GameSettings.properties"), null);
+        } catch (Exception e) {
+            System.out.println("File not found");
+        }
+    }
+
+    public void settings(JButton propertiesButton){
+
+        propertiesButton.setEnabled(false);
+
+        JFrame jfSettings = new JFrame();
+        JPanel basePanel = new JPanel(new BorderLayout());
+        JPanel sliderPanel = new JPanel(new GridLayout(4,1));
+        JPanel buttonPanel = new JPanel();
+        JLabel roundsLabel = new JLabel();
+        JLabel questionsLabel = new JLabel();
+
+        JSlider roundsSlider = new JSlider(2,9,3);
+        JSlider questionsSlider = new JSlider(1,7,3);
+
+        roundsSlider.setPaintTrack(true);
+        roundsSlider.setPaintTicks(true);
+        roundsSlider.setPaintLabels(true);
+        roundsSlider.setMajorTickSpacing(1);
+        roundsSlider.setMajorTickSpacing(1);
+
+        questionsSlider.setPaintTrack(true);
+        questionsSlider.setPaintTicks(true);
+        questionsSlider.setPaintLabels(true);
+        questionsSlider.setMajorTickSpacing(1);
+        questionsSlider.setMajorTickSpacing(1);
+
+        roundsLabel.setText("Antal rundor valda är: " + roundsSlider.getValue());
+        questionsLabel.setText("Antal frågor valda är: " + questionsSlider.getValue());
+
+        JButton okButton = new JButton("Ok");
+        JButton abortButton = new JButton("Avbryt");
+
+        jfSettings.add(basePanel);
+        basePanel.add(sliderPanel, BorderLayout.CENTER);
+        basePanel.add(buttonPanel, BorderLayout.SOUTH);
+        sliderPanel.add(roundsLabel,BorderLayout.CENTER);
+        sliderPanel.add(roundsSlider,BorderLayout.CENTER);
+        sliderPanel.add(questionsLabel,BorderLayout.CENTER);
+        sliderPanel.add(questionsSlider,BorderLayout.CENTER);
+        buttonPanel.add(okButton);
+        buttonPanel.add(abortButton);
+
+        roundsSlider.addChangeListener(e -> {
+            int currentValue = roundsSlider.getValue();
+            roundsLabel.setText("Antal rundor valda är: " + currentValue);
+
+        });
+
+        questionsSlider.addChangeListener(e -> {
+            int currentValue = questionsSlider.getValue();
+            questionsLabel.setText("Antal frågor valda är: " + currentValue);
+        });
+
+
+        okButton.addActionListener(e -> {
+            if(e.getSource() == okButton){
+
+                int roundsValue = roundsSlider.getValue();
+                int questionsValue = questionsSlider.getValue();
+
+                setProperties(roundsValue, questionsValue);
+                jfSettings.dispatchEvent(new WindowEvent(jfSettings, WindowEvent.WINDOW_CLOSING));
+                propertiesButton.setEnabled(true);
+
+            }
+        });
+
+        abortButton.addActionListener(e -> {
+            if(e.getSource() == abortButton){
+                jfSettings.dispatchEvent(new WindowEvent(jfSettings, WindowEvent.WINDOW_CLOSING));
+                propertiesButton.setEnabled(true);
+            }
+        });
+
+        jfSettings.setLocationRelativeTo(null);
+        jfSettings.setResizable(false);
+        jfSettings.setVisible(true);
+        jfSettings.setSize(300,300);
+        jfSettings.setDefaultCloseOperation(HIDE_ON_CLOSE);
+
+        jfSettings.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                propertiesButton.setEnabled(true);
+            }
+        });
+
     }
 }
